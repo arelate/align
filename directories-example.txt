@@ -1,0 +1,4 @@
+backups
+    /usr/share/boilerplate/backups
+metadata
+    /usr/share/boilerplate/metadata

@@ -10,6 +10,7 @@ backup
 
 get-source-content
     slug^&*
+    force
 
 serve
     port$*

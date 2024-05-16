@@ -1,4 +1,4 @@
-module github.com/boggydigital/align
+module github.com/arelate/align
 
 go 1.22
 
@@ -10,7 +10,10 @@ require (
 )
 
 require (
+	github.com/arelate/southern_light v0.1.36 // indirect
+	github.com/boggydigital/dolo v0.2.15 // indirect
 	github.com/boggydigital/kvas v0.4.8 // indirect
+	github.com/boggydigital/kvas_dolo v0.1.6 // indirect
 	github.com/boggydigital/wits v0.2.3 // indirect
 	golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842 // indirect
 )

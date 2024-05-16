@@ -6,7 +6,7 @@ RUN go get ./...
 RUN go build \
     -a -tags timetzdata \
     -o align \
-    -ldflags="-s -w -X 'github.com/boggydigital/align/cli.GitTag=`git describe --tags --abbrev=0`'" \
+    -ldflags="-s -w -X 'github.com/arelate/align/cli.GitTag=`git describe --tags --abbrev=0`'" \
     main.go
 
 # adding align

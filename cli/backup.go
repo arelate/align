@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/boggydigital/align/paths"
+	"github.com/arelate/align/paths"
 	"github.com/boggydigital/backups"
 	"github.com/boggydigital/nod"
 	"github.com/boggydigital/pathways"

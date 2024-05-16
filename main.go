@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	_ "embed"
-	"github.com/boggydigital/align/cli"
-	"github.com/boggydigital/align/paths"
+	"github.com/arelate/align/cli"
+	"github.com/arelate/align/paths"
 	"github.com/boggydigital/clo"
 	"github.com/boggydigital/nod"
 	"github.com/boggydigital/pathways"

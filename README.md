@@ -1,2 +1,2 @@
-# boilerplate
-🥵 Boilerplate CLI service template
+# align
+🗺️ Local gaming guides

@@ -2,7 +2,7 @@ package cli
 
 import (
 	"fmt"
-	"github.com/boggydigital/boilerplate/rest"
+	"github.com/boggydigital/align/rest"
 	"github.com/boggydigital/nod"
 	"net/http"
 	"net/url"

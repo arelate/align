@@ -8,6 +8,9 @@
 
 backup
 
+get-source-content
+    slug^&*
+
 serve
     port$*
     stderr$

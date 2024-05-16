@@ -1,14 +1,12 @@
 package cli
 
 import (
+	"github.com/boggydigital/align/paths"
 	"github.com/boggydigital/backups"
-	"github.com/boggydigital/boilerplate/paths"
 	"github.com/boggydigital/nod"
 	"github.com/boggydigital/pathways"
 	"net/url"
 )
-
-const daysToPreserveFiles = 30
 
 func BackupHandler(_ *url.URL) error {
 	return Backup()

@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	_ "embed"
-	"github.com/boggydigital/boilerplate/cli"
-	"github.com/boggydigital/boilerplate/paths"
+	"github.com/boggydigital/align/cli"
+	"github.com/boggydigital/align/paths"
 	"github.com/boggydigital/clo"
 	"github.com/boggydigital/nod"
 	"github.com/boggydigital/pathways"
@@ -25,11 +25,11 @@ const (
 func main() {
 	nod.EnableStdOutPresenter()
 
-	ea := nod.Begin("boilerplate is doing something important")
+	ea := nod.Begin("align is serving gaming guides...")
 	defer ea.End()
 
 	if err := pathways.Setup(dirOverridesFilename,
-		paths.DefaultBoilerplateRootDir,
+		paths.DefaultAlignRootDir,
 		nil,
 		paths.AllAbsDirs...); err != nil {
 		_ = ea.EndWithError(err)
@@ -47,9 +47,10 @@ func main() {
 	}
 
 	clo.HandleFuncs(map[string]clo.Handler{
-		"backup":  cli.BackupHandler,
-		"serve":   cli.ServeHandler,
-		"version": cli.VersionHandler,
+		"backup":             cli.BackupHandler,
+		"get-source-content": cli.GetSourceContentHandler,
+		"serve":              cli.ServeHandler,
+		"version":            cli.VersionHandler,
 	})
 
 	if err := defs.AssertCommandsHaveHandlers(); err != nil {

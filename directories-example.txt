@@ -1,4 +1,10 @@
 backups
-    /usr/share/boilerplate/backups
+    /usr/share/align/backups
+images
+    /usr/share/align/images
 metadata
-    /usr/share/boilerplate/metadata
+    /usr/share/align/metadata
+reduced-content
+    /usr/share/align/reduced-content
+source-content
+    /usr/share/align/source-content

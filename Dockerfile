@@ -5,22 +5,23 @@ WORKDIR /go/src/app
 RUN go get ./...
 RUN go build \
     -a -tags timetzdata \
-    -o boilerplate \
-    -ldflags="-s -w -X 'github.com/boggydigital/boilerplate/cli.GitTag=`git describe --tags --abbrev=0`'" \
+    -o align \
+    -ldflags="-s -w -X 'github.com/boggydigital/align/cli.GitTag=`git describe --tags --abbrev=0`'" \
     main.go
 
-# adding boilerplate
+# adding align
 FROM alpine:latest
-COPY --from=build /go/src/app/boilerplate /usr/bin/boilerplate
+COPY --from=build /go/src/app/align /usr/bin/align
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-EXPOSE 1234
+# https://en.wikipedia.org/wiki/Strategy_guide
+EXPOSE 1981
 
 # backups
-VOLUME /usr/share/boilerplate/backups
+VOLUME /usr/share/align/backups
 # metadata
-VOLUME /usr/share/boilerplate/metadata
+VOLUME /usr/share/align/metadata
 
-ENTRYPOINT ["/usr/bin/boilerplate"]
-CMD ["serve","-port", "1234", "-stderr"]
+ENTRYPOINT ["/usr/bin/align"]
+CMD ["serve","-port", "1981", "-stderr"]
 

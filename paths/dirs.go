@@ -4,14 +4,20 @@ import (
 	"github.com/boggydigital/pathways"
 )
 
-const DefaultBoilerplateRootDir = "/usr/share/boilerplate"
+const DefaultAlignRootDir = "/usr/share/align"
 
 const (
-	Backups  pathways.AbsDir = "backups"
-	Metadata pathways.AbsDir = "metadata"
+	Backups        pathways.AbsDir = "backups"
+	Images         pathways.AbsDir = "images"
+	Metadata       pathways.AbsDir = "metadata"
+	ReducedContent pathways.AbsDir = "reduced-content"
+	SourceContent  pathways.AbsDir = "source-content"
 )
 
 var AllAbsDirs = []pathways.AbsDir{
 	Backups,
+	Images,
 	Metadata,
+	ReducedContent,
+	SourceContent,
 }

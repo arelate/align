@@ -9,5 +9,10 @@ func ParseLinkedPagesHandler(u *url.URL) error {
 }
 
 func ParseLinkedPages(slug, page string) error {
+
+	// get next page
+	// get previous page
+	// process HTML content and extract pages
+
 	return nil
 }

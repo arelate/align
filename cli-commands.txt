@@ -8,11 +8,14 @@
 
 backup
 
-get-source-content
-    slug^&*
+get-source-page
+    slug^*
+    page
     force
 
-reduce-content
+reduce-page
+    slug^*
+    page
     force
 
 serve

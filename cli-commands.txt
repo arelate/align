@@ -12,6 +12,9 @@ get-source-content
     slug^&*
     force
 
+reduce-content
+    force
+
 serve
     port$*
     stderr$

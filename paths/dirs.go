@@ -2,6 +2,7 @@ package paths
 
 import (
 	"github.com/boggydigital/pathways"
+	"path/filepath"
 )
 
 const DefaultAlignRootDir = "/usr/share/align"
@@ -20,4 +21,20 @@ var AllAbsDirs = []pathways.AbsDir{
 	Metadata,
 	SourcePages,
 	ReducedPages,
+}
+
+func AbsSourcePagesDir(slug string) (string, error) {
+	if spd, err := pathways.GetAbsDir(SourcePages); err == nil {
+		return filepath.Join(spd, slug), nil
+	} else {
+		return "", err
+	}
+}
+
+func AbsReducedPagesDir(slug string) (string, error) {
+	if spd, err := pathways.GetAbsDir(ReducedPages); err == nil {
+		return filepath.Join(spd, slug), nil
+	} else {
+		return "", err
+	}
 }

@@ -6,12 +6,10 @@ import (
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/match_node"
 	"github.com/boggydigital/nod"
-	"github.com/boggydigital/pathways"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 	"net/url"
 	"path"
-	"path/filepath"
 	"strings"
 )
 
@@ -25,6 +23,7 @@ func ReducePageHandler(u *url.URL) error {
 	slug := u.Query().Get("slug")
 	page := u.Query().Get("page")
 	force := u.Query().Has("force")
+
 	return ReducePage(slug, page, force)
 }
 
@@ -37,12 +36,10 @@ func ReducePage(slug, page string, force bool) error {
 	rca := nod.Begin("reducing page %s...", path.Join(slug, page))
 	defer rca.End()
 
-	rpd, err := pathways.GetAbsDir(paths.ReducedPages)
+	rpd, err := paths.AbsReducedPagesDir(slug)
 	if err != nil {
 		return rca.EndWithError(err)
 	}
-
-	rpd = filepath.Join(rpd, slug)
 
 	rkv, err := kvas.ConnectLocal(rpd, kvas.JsonExt)
 	if err != nil {
@@ -53,12 +50,10 @@ func ReducePage(slug, page string, force bool) error {
 		return nil
 	}
 
-	spd, err := pathways.GetAbsDir(paths.SourcePages)
+	spd, err := paths.AbsSourcePagesDir(slug)
 	if err != nil {
 		return rca.EndWithError(err)
 	}
-
-	spd = filepath.Join(spd, slug)
 
 	skv, err := kvas.ConnectLocal(spd, kvas.HtmlExt)
 	if err != nil {

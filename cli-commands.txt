@@ -8,6 +8,10 @@
 
 backup
 
+get-linked-pages
+    slug^*
+    page
+
 get-source-page
     slug^*
     page

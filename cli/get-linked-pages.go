@@ -2,13 +2,14 @@ package cli
 
 import "net/url"
 
-func ParseLinkedPagesHandler(u *url.URL) error {
+func GetLinkedPagesHandler(u *url.URL) error {
 	slug := u.Query().Get("slug")
 	page := u.Query().Get("page")
-	return ParseLinkedPages(slug, page)
+
+	return GetLinkedPages(slug, page)
 }
 
-func ParseLinkedPages(slug, page string) error {
+func GetLinkedPages(slug, page string) error {
 
 	// get next page
 	// get previous page

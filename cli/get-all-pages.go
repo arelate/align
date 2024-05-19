@@ -8,21 +8,30 @@ import (
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
 	"net/url"
+	"strconv"
 	"time"
 )
 
 const (
-	throttleMs = 1000
+	throttleMs = int64(1000)
 )
 
 func GetAllPagesHandler(u *url.URL) error {
-	slug := u.Query().Get("slug")
-	force := u.Query().Has("force")
+	q := u.Query()
 
-	return GetAllPages(slug, force)
+	slug := q.Get("slug")
+	force := q.Has("force")
+	var throttle = throttleMs
+	if tstr := q.Get("throttle"); tstr != "" {
+		if ti, err := strconv.ParseInt(tstr, 10, 64); err == nil {
+			throttle = ti
+		}
+	}
+
+	return GetAllPages(slug, throttle, force)
 }
 
-func GetAllPages(slug string, force bool) error {
+func GetAllPages(slug string, throttle int64, force bool) error {
 
 	gapa := nod.Begin("getting all pages for %s...", slug)
 	defer gapa.End()
@@ -42,7 +51,7 @@ func GetAllPages(slug string, force bool) error {
 	for morePages(pages) {
 		page := nextPage(pages)
 
-		urls, err := getUrls(kv, slug, page, force)
+		urls, err := getUrls(kv, slug, page, throttle, force)
 		if err != nil {
 			return gapa.EndWithError(err)
 		}
@@ -78,7 +87,7 @@ func morePages(pages map[string]bool) bool {
 	return false
 }
 
-func getUrls(kv kvas.KeyValues, slug, page string, force bool) ([]string, error) {
+func getUrls(kv kvas.KeyValues, slug, page string, throttle int64, force bool) ([]string, error) {
 	if err := GetPage(slug, page, force); err != nil {
 		return nil, err
 	}
@@ -88,7 +97,7 @@ func getUrls(kv kvas.KeyValues, slug, page string, force bool) ([]string, error)
 	}
 
 	// throttle requests
-	time.Sleep(throttleMs * time.Millisecond)
+	time.Sleep(time.Duration(throttle) * time.Millisecond)
 
 	if err := kv.IndexRefresh(); err != nil {
 		return nil, err

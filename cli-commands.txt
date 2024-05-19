@@ -10,6 +10,7 @@ backup
 
 get-all-pages
     slug^*
+    throttle
     force
 
 get-page

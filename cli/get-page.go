@@ -15,15 +15,15 @@ const (
 	mainPage  = "Main_Page"
 )
 
-func GetSourcePageHandler(u *url.URL) error {
+func GetPageHandler(u *url.URL) error {
 	slug := u.Query().Get("slug")
 	page := u.Query().Get("page")
 	force := u.Query().Has("force")
 
-	return GetSourcePage(slug, page, force)
+	return GetPage(slug, page, force)
 }
 
-func GetSourcePage(slug, page string, force bool) error {
+func GetPage(slug, page string, force bool) error {
 
 	if page == "" {
 		page = mainPage
@@ -32,7 +32,7 @@ func GetSourcePage(slug, page string, force bool) error {
 	gsca := nod.Begin("getting source page %s...", path.Join(slug, page))
 	defer gsca.End()
 
-	spd, err := paths.AbsSourcePagesDir(slug)
+	spd, err := paths.AbsPagesDir(slug)
 	if err != nil {
 		return gsca.EndWithError(err)
 	}

@@ -8,19 +8,22 @@
 
 backup
 
-get-linked-pages
+get-all-pages
     slug^*
-    page
+    force
 
-get-source-page
+get-page
     slug^*
     page
     force
 
-reduce-page
+get-data
     slug^*
     page
     force
+
+reduce
+    slug^*
 
 serve
     port$*

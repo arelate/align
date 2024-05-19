@@ -4,7 +4,7 @@ images
     /usr/share/align/images
 metadata
     /usr/share/align/metadata
-reduced-content
-    /usr/share/align/reduced-content
-source-content
-    /usr/share/align/source-content
+data
+    /usr/share/align/data
+pages
+    /usr/share/align/pages

@@ -19,15 +19,15 @@ var (
 	ErrReducedContentNotPresent = errors.New("reduced content not present")
 )
 
-func ReducePageHandler(u *url.URL) error {
+func GetDataHandler(u *url.URL) error {
 	slug := u.Query().Get("slug")
 	page := u.Query().Get("page")
 	force := u.Query().Has("force")
 
-	return ReducePage(slug, page, force)
+	return GetData(slug, page, force)
 }
 
-func ReducePage(slug, page string, force bool) error {
+func GetData(slug, page string, force bool) error {
 
 	if page == "" {
 		page = mainPage
@@ -36,7 +36,7 @@ func ReducePage(slug, page string, force bool) error {
 	rca := nod.Begin("reducing page %s...", path.Join(slug, page))
 	defer rca.End()
 
-	rpd, err := paths.AbsReducedPagesDir(slug)
+	rpd, err := paths.AbsDataDir(slug)
 	if err != nil {
 		return rca.EndWithError(err)
 	}
@@ -50,7 +50,7 @@ func ReducePage(slug, page string, force bool) error {
 		return nil
 	}
 
-	spd, err := paths.AbsSourcePagesDir(slug)
+	spd, err := paths.AbsPagesDir(slug)
 	if err != nil {
 		return rca.EndWithError(err)
 	}

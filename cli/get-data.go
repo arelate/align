@@ -83,7 +83,8 @@ func getSetReducedContent(page string, skv, rkv kvas.KeyValues) error {
 	}
 
 	if nextDataNode := match_node.Match(body, &nextDataMatcher{}); nextDataNode != nil && nextDataNode.FirstChild != nil {
-		return rkv.Set(page, strings.NewReader(nextDataNode.FirstChild.Data))
+		data := fixDataProblems(nextDataNode.FirstChild.Data)
+		return rkv.Set(page, strings.NewReader(data))
 	}
 
 	return ErrReducedContentNotPresent
@@ -98,4 +99,16 @@ func (ndm *nextDataMatcher) Match(node *html.Node) bool {
 	}
 
 	return match_node.AttrVal(node, "id") == nextDataScriptId
+}
+
+func fixDataProblems(data string) string {
+	// 1. htmlEntities.values sometimes is a struct of
+	// github.com/arelate/southern_light/ign_integration/HTMLValue type
+	// and sometimes is an array of images of
+	// github.com/arelate/southern_light/ign_integration/ImageValue type
+	// in order to fix that - look for "values:[" and replace with "imageValues:["
+	// given that at the moment no other data would match that
+	fixedData := strings.Replace(data, "\"values\":[", "\"imageValues\":[", -1)
+
+	return fixedData
 }

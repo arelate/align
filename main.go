@@ -47,13 +47,15 @@ func main() {
 	}
 
 	clo.HandleFuncs(map[string]clo.Handler{
-		"backup":        cli.BackupHandler,
-		"get-all-pages": cli.GetAllPagesHandler,
-		"get-data":      cli.GetDataHandler,
-		"get-page":      cli.GetPageHandler,
-		"reduce":        cli.ReduceHandler,
-		"serve":         cli.ServeHandler,
-		"version":       cli.VersionHandler,
+		"backup":         cli.BackupHandler,
+		"get-all-images": cli.GetAllImagesHandler,
+		"get-all-pages":  cli.GetAllPagesHandler,
+		"get-data":       cli.GetDataHandler,
+		"get-images":     cli.GetImagesHandler,
+		"get-page":       cli.GetPageHandler,
+		"reduce":         cli.ReduceHandler,
+		"serve":          cli.ServeHandler,
+		"version":        cli.VersionHandler,
 	})
 
 	if err := defs.AssertCommandsHaveHandlers(); err != nil {

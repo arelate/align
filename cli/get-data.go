@@ -36,7 +36,7 @@ func GetData(slug, page string, force bool) error {
 	rca := nod.Begin("reducing page %s...", path.Join(slug, page))
 	defer rca.End()
 
-	rpd, err := paths.AbsDataDir(slug)
+	rpd, err := paths.AbsDataSlugDir(slug)
 	if err != nil {
 		return rca.EndWithError(err)
 	}
@@ -50,7 +50,7 @@ func GetData(slug, page string, force bool) error {
 		return nil
 	}
 
-	spd, err := paths.AbsPagesDir(slug)
+	spd, err := paths.AbsPagesSlugDir(slug)
 	if err != nil {
 		return rca.EndWithError(err)
 	}

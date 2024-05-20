@@ -14,6 +14,7 @@ require (
 )
 
 require (
+	github.com/boggydigital/dolo v0.2.15 // indirect
 	github.com/boggydigital/wits v0.2.3 // indirect
 	golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842 // indirect
 )

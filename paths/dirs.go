@@ -23,16 +23,20 @@ var AllAbsDirs = []pathways.AbsDir{
 	Data,
 }
 
-func AbsPagesDir(slug string) (string, error) {
-	if spd, err := pathways.GetAbsDir(Pages); err == nil {
-		return filepath.Join(spd, slug), nil
-	} else {
-		return "", err
-	}
+func AbsPagesSlugDir(slug string) (string, error) {
+	return absSlugDir(slug, Pages)
 }
 
-func AbsDataDir(slug string) (string, error) {
-	if spd, err := pathways.GetAbsDir(Data); err == nil {
+func AbsDataSlugDir(slug string) (string, error) {
+	return absSlugDir(slug, Data)
+}
+
+func AbsImagesSlugDir(slug string) (string, error) {
+	return absSlugDir(slug, Images)
+}
+
+func absSlugDir(slug string, absDir pathways.AbsDir) (string, error) {
+	if spd, err := pathways.GetAbsDir(absDir); err == nil {
 		return filepath.Join(spd, slug), nil
 	} else {
 		return "", err

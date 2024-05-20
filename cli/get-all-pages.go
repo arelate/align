@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	throttleMs = int64(1000)
+	defaultThrottleMs = int64(1000)
 )
 
 func GetAllPagesHandler(u *url.URL) error {
@@ -21,7 +21,7 @@ func GetAllPagesHandler(u *url.URL) error {
 
 	slug := q.Get("slug")
 	force := q.Has("force")
-	var throttle = throttleMs
+	var throttle = defaultThrottleMs
 	if tstr := q.Get("throttle"); tstr != "" {
 		if ti, err := strconv.ParseInt(tstr, 10, 64); err == nil {
 			throttle = ti
@@ -36,7 +36,7 @@ func GetAllPages(slug string, throttle int64, force bool) error {
 	gapa := nod.Begin("getting all pages for %s...", slug)
 	defer gapa.End()
 
-	sdd, err := paths.AbsDataDir(slug)
+	sdd, err := paths.AbsDataSlugDir(slug)
 	if err != nil {
 		return gapa.EndWithError(err)
 	}

@@ -8,9 +8,18 @@
 
 backup
 
+get-all-images
+    slug^*
+    force
+
 get-all-pages
     slug^*
     throttle
+    force
+
+get-images
+    slug^*
+    page
     force
 
 get-page

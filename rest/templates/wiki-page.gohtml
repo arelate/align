@@ -1,0 +1,60 @@
+{{define "wiki-page"}}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta name='color-scheme' content='dark light'>
+        <title>{{.Title}}</title>
+        {{template "css-shared"}}
+        <style>
+            section {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                margin-block: var(--large);
+
+                & a {
+                    font-size: var(--fs-larger);
+                }
+
+                & .previous {
+                    align-self: start;
+                }
+
+                & span {
+                    flex-grow: 1;
+                }
+
+                & .next {
+                    align-self: end;
+                }
+            }
+
+            img {
+                max-width: 100%;
+            }
+
+        </style>
+    </head>
+    <body>
+
+    <h1>{{.Title}}</h1>
+
+    {{range .Entities}}
+        {{.}}
+    {{end}}
+
+    <section>
+        {{if .PrevPageUrl}}
+            <a class="previous" href="{{.PrevPageUrl}}">Prev: {{.PrevPageLabel}}</a>
+        {{end}}
+        <span></span>
+        {{if .NextPageUrl}}
+            <a class="next" href="{{.NextPageUrl}}">Next: {{.NextPageLabel}}</a>
+        {{end}}
+    </section>
+
+    </body>
+    </html>
+{{end}}

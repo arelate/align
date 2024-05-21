@@ -1,0 +1,255 @@
+{{define "css-shared"}}
+    {{template "css-base-themes"}}
+    <style id="shared-styles">
+        body {
+            font-family: sans-serif;
+            margin: var(--large);
+            margin-block-start: var(--normal);
+            container-type: inline-size;
+
+        }
+
+        .watchlist_container,
+        .playlists_container,
+        .results_container,
+        .history_container,
+        .video_details_container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--small)
+        }
+
+        a {
+            color: var(--color-light-blue);
+            font-size: var(--fs-normal);
+            font-weight: var(--fw-bolder);
+            text-decoration: none;
+            /*margin-block: var(--large);*/
+        }
+
+        a img {
+            border-radius: var(--border-radius);
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: var(--subtle-color)
+        }
+
+        a progress {
+            width: 100%;
+        }
+
+        a .duration {
+            position: absolute;
+            padding: var(--small);
+            font-size: var(--fs-x-smaller);
+            background: var(--highlight-color);
+            border-top-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+            color: var(--color);
+        }
+
+        a.ended {
+            filter: grayscale(1.0);
+            color: var(--subtle-color)
+        }
+
+        ul {
+            list-style: none;
+            padding-inline-start: 0
+        }
+
+        ul.horizontal {
+            display: flex;
+            flex-direction: row;
+            column-gap: var(--normal);
+
+            & a.action {
+                margin-block: var(--small)
+            }
+        }
+
+        .videos {
+            justify-content: start;
+            gap: var(--large);
+            margin-block: var(--large)
+        }
+
+        .playlists {
+            justify-content: start;
+            gap: var(--large);
+            margin-block: var(--large)
+        }
+
+        .playlist-container {
+            background: var(--highlight-color);
+            border-radius: var(--border-radius-large);
+            width: var(--resp-grid-column-width);
+        }
+
+        @media only screen and (max-width: 700px) {
+            .playlist-container {
+                width: calc(100%);
+            }
+        }
+
+        h1.playlist,
+        h1.channel,
+        h1.history,
+        h1.results,
+        h1.video,
+        h1.form {
+            margin-block: var(--large);
+        }
+
+        a.playlist,
+        a.channel {
+            padding: var(--normal);
+            display: flex;
+            gap: var(--normal);
+            flex-direction: column;
+            font-size: var(--fs-larger);
+            text-decoration: none;
+            margin-block: initial;
+            position: relative;
+        }
+
+        a.channel {
+            padding-inline: 0;
+        }
+
+        .channel_playlist a.playlist {
+            padding: 0;
+            margin-block: var(--large);
+            font-size: var(--fs-normal);
+        }
+
+        a.action {
+            color: white;
+            margin-block: var(--large);
+            font-size: var(--fs-smaller);
+            padding: var(--small) var(--normal);
+            background: var(--color-blue);
+            width: max-content;
+            border-radius: var(--large);
+            font-weight: var(--fw-bolder);
+        }
+
+        .playlist {
+            color: var(--color-indigo)
+        }
+
+        .playlist.downloading {
+            color: var(--color-light-green)
+        }
+
+        .playlist.downloading.ended {
+            color: var(--color-brown);
+        }
+
+        .playlist.ended {
+            color: var(--color-deep-purple);
+            filter: none;
+            font-weight: normal;
+        }
+
+        .channel {
+            color: var(--color-pink)
+        }
+
+        .subtitle {
+            font-size: var(--fs-x-smaller);
+            font-weight: normal
+        }
+
+        a.playlist .subtitle {
+            font-size: var(--fs-smaller);
+            color: inherit;
+        }
+
+        a.playlist .new_videos {
+            position: absolute;
+            background-color: var(--color-lime);
+            color: var(--highlight-color);
+            right: 0;
+            top: 0;
+            padding-inline: var(--small);
+            padding-block: var(--xx-small);
+            font-size: var(--fs-x-smaller);
+            border-top-right-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
+        }
+
+        .title {
+            margin-block: var(--small)
+        }
+
+        a.playlist .title {
+            margin-block: 0;
+        /*    margin-block-end: var(--normal);*/
+        }
+
+        .info {
+            margin-block: var(--large);
+            font-size: var(--fs-smaller);
+            color: var(--subtle-color)
+        }
+
+        a .subtitle {
+            color: var(--subtle-color);
+        }
+
+        .subtle {
+            color: var(--subtle-color);
+        }
+
+        summary h1, summary h2, h1.highlight {
+            display: inline;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: var(--fs-xx-larger);
+        }
+
+        h2 {
+            font-size: var(--fs-larger);
+        }
+
+        ul.management {
+            margin-block-start: var(--normal)
+        }
+
+        ul.management li {
+            margin-block: var(--normal);
+            font-size: var(--fs-normal);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            column-gap: var(--normal);
+        }
+
+        input[type=checkbox] {
+            flex-shrink: 0;
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: var(--x-small);
+
+            span {
+                &.title {
+                    margin-block: unset;
+                    font-weight: var(--fw-bolder);
+                }
+
+                &.subtitle {
+                    font-size: var(--fs-x-smaller);
+                }
+            }
+        }
+
+    </style>
+{{end}}

@@ -16,7 +16,7 @@
 
             section.prev-next-buttons {
                 display: grid;
-                grid-template-columns: 50% 50%;
+                grid-template-columns: 47.5% auto 47.5%;
                 flex-direction: row;
                 width: 100%;
                 margin-block: var(--large);
@@ -47,11 +47,11 @@
 
             ul.dates {
 
-                font-size: var(--fs-smaller);
-                row-gap: var(--small);
+                font-size: var(--fs-x-smaller);
+                row-gap: var(--x-small);
 
-                & span {
-                    font-weight: var(--fw-bolder);
+                & h3 {
+                    margin-block: 0;
                 }
 
                 & time {
@@ -67,11 +67,11 @@
     <h1>{{.Title}}</h1>
     <ul class="dates">
         <li>
-            <span>Published:</span>
+            <h3>Published</h3>
             <time>{{.PublishDate}}</time>
         </li>
         <li>
-            <span>Updated:</span>
+            <h3>Updated</h3>
             <time>{{.UpdatedAt}}</time>
         </li>
     </ul>
@@ -81,20 +81,21 @@
     {{end}}
 
     <section class="prev-next-buttons">
-        {{if .PrevPageUrl}}
-            <button>
+        <button>
+            {{if .PrevPageUrl}}
                 <a class="previous" href="{{.PrevPageUrl}}">
                     {{.PrevPageLabel}}
                 </a>
-            </button>
-        {{end}}
-        {{if .NextPageUrl}}
-            <button>
+            {{end}}
+        </button>
+        <span></span>
+        <button>
+            {{if .NextPageUrl}}
                 <a class="next" href="{{.NextPageUrl}}">
                     {{.NextPageLabel}}
                 </a>
-            </button>
-        {{end}}
+            {{end}}
+        </button>
     </section>
 
     </body>

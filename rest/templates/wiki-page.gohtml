@@ -5,7 +5,7 @@
         <meta charset='UTF-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <meta name='color-scheme' content='dark light'>
-        <title>{{.Title}}</title>
+        <title>{{.PageTitle}} - {{.WikiPageName}}</title>
         {{template "css-base"}}
         <style>
 
@@ -15,13 +15,15 @@
             }
 
             section.prev-next-buttons {
-                display: grid;
-                grid-template-columns: 47.5% auto 47.5%;
-                flex-direction: row;
+                display: flex;
+                flex-direction: column;
                 width: 100%;
                 margin-block: var(--large);
+                row-gap: var(--normal);
 
                 & button {
+
+                    margin: 0;
 
                     & a {
                         display: block;
@@ -62,12 +64,17 @@
                 display: flex;
             }
 
+            h2.subtle {
+                color:var(--subtle-color)
+            }
+
         </style>
     </head>
     <body>
 
+    <h1>{{.PageTitle}}</h1>
+    <h2 class="subtle">{{.WikiPageName}}</h2>
 
-    <h1>{{.Title}}</h1>
     <ul class="dates">
         <li>
             <span>Pub:</span>
@@ -86,21 +93,21 @@
     {{end}}
 
     <section class="prev-next-buttons">
-        <button>
-            {{if .PrevPageUrl}}
+        {{if .PrevPageUrl}}
+            <button>
                 <a class="previous" href="{{.PrevPageUrl}}">
                     {{.PrevPageLabel}}
                 </a>
-            {{end}}
-        </button>
-        <span></span>
-        <button>
-            {{if .NextPageUrl}}
+            </button>
+        {{end}}
+        {{if .NextPageUrl}}
+            <button>
                 <a class="next" href="{{.NextPageUrl}}">
                     {{.NextPageLabel}}
                 </a>
-            {{end}}
-        </button>
+            </button>
+        {{end}}
+
     </section>
 
     </body>

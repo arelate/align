@@ -12,7 +12,8 @@ import (
 )
 
 type WikiPageViewModel struct {
-	Title         string
+	WikiPageName  string
+	PageTitle     string
 	PublishDate   string
 	UpdatedAt     string
 	Entities      []template.HTML
@@ -80,9 +81,10 @@ func NewWikiPageViewModel(wp *ign_integration.WikiProps) *WikiPageViewModel {
 	page := wp.Props.PageProps.Page
 
 	wpvm := &WikiPageViewModel{
-		Title:       page.Title,
-		PublishDate: page.PublishDate.Format("Jan 2, 2006"),
-		UpdatedAt:   page.UpdatedAt.Format("Jan 2, 2006"),
+		WikiPageName: page.Name,
+		PageTitle:    page.Page.Title,
+		PublishDate:  page.PublishDate.Format("Jan 2, 2006"),
+		UpdatedAt:    page.UpdatedAt.Format("Jan 2, 2006"),
 	}
 
 	for _, he := range wp.HTMLEntities() {
@@ -105,4 +107,14 @@ func NewWikiPageViewModel(wp *ign_integration.WikiProps) *WikiPageViewModel {
 	wpvm.PrevPageUrl = wp.PreviousPageUrl()
 
 	return wpvm
+}
+
+func chapterTitle(wp *ign_integration.WikiProps) (string, string) {
+	title := wp.Props.PageProps.Page.Page.Title
+	if parts := strings.Split(title, " - "); len(parts) == 2 {
+		return "", parts[0]
+	} else if len(parts) > 2 {
+		return parts[0], parts[1]
+	}
+	return "", ""
 }

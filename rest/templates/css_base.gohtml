@@ -51,8 +51,38 @@
         }
 
         body {
-            margin: var(--normal);
+            margin: var(--large);
         }
+
+        ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            row-gap: var(--normal);
+            padding: var(--normal) !important;
+            background: var(--highlight-color);
+            border-radius: var(--border-radius-large);
+        }
+
+        p, li {
+            line-height: calc((var(--normal) + var(--large))/2);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-blue);
+            font-weight: var(--fw-bolder);
+        }
+
+        a:visited {
+            color: var(--color-purple)
+        }
+
+        img {
+            display: block;
+            margin-block: var(--normal);
+        }
+
 
         .resp-grid {
             display: grid;

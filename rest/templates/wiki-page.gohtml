@@ -15,22 +15,21 @@
             }
 
             section.prev-next-buttons {
-                display: flex;
+                display: grid;
+                grid-template-columns: 50% 50%;
                 flex-direction: row;
                 width: 100%;
                 margin-block: var(--large);
 
-                & a {
-                    font-size: var(--fs-larger);
-                    font-weight: var(--fw-bolder);
+                & button {
+
+                    & a {
+                        color: var(--background-color);
+                    }
                 }
 
                 & .previous {
                     align-self: start;
-                }
-
-                & span {
-                    flex-grow: 1;
                 }
 
                 & .next {
@@ -54,6 +53,7 @@
                 & span {
                     font-weight: var(--fw-bolder);
                 }
+
                 & time {
                     color: var(--subtle-color);
                 }
@@ -82,11 +82,18 @@
 
     <section class="prev-next-buttons">
         {{if .PrevPageUrl}}
-            <a class="previous" href="{{.PrevPageUrl}}"><< {{.PrevPageLabel}}</a>
+            <button>
+                <a class="previous" href="{{.PrevPageUrl}}">
+                    {{.PrevPageLabel}}
+                </a>
+            </button>
         {{end}}
-        <span></span>
         {{if .NextPageUrl}}
-            <a class="next" href="{{.NextPageUrl}}">{{.NextPageLabel}} >></a>
+            <button>
+                <a class="next" href="{{.NextPageUrl}}">
+                    {{.NextPageLabel}}
+                </a>
+            </button>
         {{end}}
     </section>
 

@@ -9,7 +9,6 @@ import (
 	"html/template"
 	"net/http"
 	"strings"
-	"time"
 )
 
 type WikiPageViewModel struct {
@@ -82,8 +81,8 @@ func NewWikiPageViewModel(wp *ign_integration.WikiProps) *WikiPageViewModel {
 
 	wpvm := &WikiPageViewModel{
 		Title:       page.Title,
-		PublishDate: page.PublishDate.Format(time.RFC1123),
-		UpdatedAt:   page.UpdatedAt.Format(time.RFC1123),
+		PublishDate: page.PublishDate.Format("Jan 2, 2006"),
+		UpdatedAt:   page.UpdatedAt.Format("Jan 2, 2006"),
 	}
 
 	for _, he := range wp.HTMLEntities() {

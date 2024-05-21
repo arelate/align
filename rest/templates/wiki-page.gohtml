@@ -47,11 +47,14 @@
 
             ul.dates {
 
+                display: flex;
+                flex-direction: row;
                 font-size: var(--fs-x-smaller);
-                row-gap: var(--x-small);
+                column-gap: var(--small);
+                width: max-content;
 
-                & h3 {
-                    margin-block: 0;
+                & span {
+                    font-weight: var(--fw-bolder);
                 }
 
                 & time {
@@ -67,11 +70,11 @@
     <h1>{{.Title}}</h1>
     <ul class="dates">
         <li>
-            <h3>Published</h3>
+            <span>Pub:</span>
             <time>{{.PublishDate}}</time>
         </li>
         <li>
-            <h3>Updated</h3>
+            <span>Upd:</span>
             <time>{{.UpdatedAt}}</time>
         </li>
     </ul>

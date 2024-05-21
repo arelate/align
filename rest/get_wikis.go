@@ -9,10 +9,13 @@ import (
 	"html/template"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type WikiPageViewModel struct {
 	Title         string
+	PublishDate   string
+	UpdatedAt     string
 	Entities      []template.HTML
 	PrevPageLabel string
 	PrevPageUrl   string
@@ -75,13 +78,19 @@ func rewriteImageLinks(html string) string {
 }
 
 func NewWikiPageViewModel(wp *ign_integration.WikiProps) *WikiPageViewModel {
-	wpvm := &WikiPageViewModel{Title: wp.Props.PageProps.Page.Title}
+	page := wp.Props.PageProps.Page
+
+	wpvm := &WikiPageViewModel{
+		Title:       page.Title,
+		PublishDate: page.PublishDate.Format(time.RFC1123),
+		UpdatedAt:   page.UpdatedAt.Format(time.RFC1123),
+	}
 
 	for _, he := range wp.HTMLEntities() {
 		wpvm.Entities = append(wpvm.Entities, template.HTML(rewriteImageLinks(he.Values.Html)))
 
 		for _, iv := range he.ImageValues {
-			wpvm.Entities = append(wpvm.Entities, template.HTML("<img src='"+rewriteImageLinks(iv.Original)+"' /><br>"))
+			wpvm.Entities = append(wpvm.Entities, template.HTML("<img src='"+rewriteImageLinks(iv.Original)+"' />"))
 		}
 	}
 

@@ -11,7 +11,7 @@
 
             /* inherited classes */
             .thumbcaption {
-                color: var(--subtle-color);
+                display: none;
             }
 
             section.prev-next-buttons {
@@ -38,8 +38,25 @@
                 }
             }
 
+            p {
+                width: 100%;
+            }
+
             img {
                 max-width: 100%;
+            }
+
+            ul.dates {
+
+                font-size: var(--fs-smaller);
+                row-gap: var(--small);
+
+                & span {
+                    font-weight: var(--fw-bolder);
+                }
+                & time {
+                    color: var(--subtle-color);
+                }
             }
 
         </style>
@@ -47,21 +64,31 @@
     <body>
 
 
-        <h1>{{.Title}}</h1>
+    <h1>{{.Title}}</h1>
+    <ul class="dates">
+        <li>
+            <span>Published:</span>
+            <time>{{.PublishDate}}</time>
+        </li>
+        <li>
+            <span>Updated:</span>
+            <time>{{.UpdatedAt}}</time>
+        </li>
+    </ul>
 
-        {{range .Entities}}
-            {{.}}
+    {{range .Entities}}
+        {{.}}
+    {{end}}
+
+    <section class="prev-next-buttons">
+        {{if .PrevPageUrl}}
+            <a class="previous" href="{{.PrevPageUrl}}"><< {{.PrevPageLabel}}</a>
         {{end}}
-
-        <section class="prev-next-buttons">
-            {{if .PrevPageUrl}}
-                <a class="previous" href="{{.PrevPageUrl}}"><< {{.PrevPageLabel}}</a>
-            {{end}}
-            <span></span>
-            {{if .NextPageUrl}}
-                <a class="next" href="{{.NextPageUrl}}">{{.NextPageLabel}} >></a>
-            {{end}}
-        </section>
+        <span></span>
+        {{if .NextPageUrl}}
+            <a class="next" href="{{.NextPageUrl}}">{{.NextPageLabel}} >></a>
+        {{end}}
+    </section>
 
     </body>
     </html>

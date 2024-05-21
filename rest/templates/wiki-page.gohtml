@@ -24,16 +24,10 @@
                 & button {
 
                     & a {
+                        display: block;
                         color: var(--background-color);
+                        width: 100%;
                     }
-                }
-
-                & .previous {
-                    align-self: start;
-                }
-
-                & .next {
-                    align-self: end;
                 }
             }
 
@@ -43,6 +37,7 @@
 
             img {
                 max-width: 100%;
+                border-radius: var(--border-radius);
             }
 
             ul.dates {
@@ -60,6 +55,11 @@
                 & time {
                     color: var(--subtle-color);
                 }
+            }
+
+            output {
+                width: 100%;
+                display: flex;
             }
 
         </style>
@@ -80,7 +80,9 @@
     </ul>
 
     {{range .Entities}}
-        {{.}}
+        <output>
+            {{.}}
+        </output>
     {{end}}
 
     <section class="prev-next-buttons">

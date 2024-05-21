@@ -22,7 +22,7 @@ type WikiPageViewModel struct {
 	NextPageUrl   string
 }
 
-func GetWikis(w http.ResponseWriter, r *http.Request) {
+func GetWikisSlugPage(w http.ResponseWriter, r *http.Request) {
 
 	// GET /wikis/{slug}/{page}
 
@@ -88,8 +88,13 @@ func NewWikiPageViewModel(wp *ign_integration.WikiProps) *WikiPageViewModel {
 	for _, he := range wp.HTMLEntities() {
 		wpvm.Entities = append(wpvm.Entities, template.HTML(rewriteImageLinks(he.Values.Html)))
 
+		imagesContent := ""
 		for _, iv := range he.ImageValues {
-			wpvm.Entities = append(wpvm.Entities, template.HTML("<img src='"+rewriteImageLinks(iv.Original)+"' />"))
+			imagesContent += "<img src='" + rewriteImageLinks(iv.Original) + "' />"
+		}
+
+		if imagesContent != "" {
+			wpvm.Entities = append(wpvm.Entities, template.HTML(imagesContent))
 		}
 	}
 

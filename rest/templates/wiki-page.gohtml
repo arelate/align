@@ -6,8 +6,34 @@
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <meta name='color-scheme' content='dark light'>
         <title>{{.Title}}</title>
-        {{template "css-shared"}}
+        {{template "css-base"}}
         <style>
+
+            /* inherited classes */
+            .thumbcaption {
+                color: var(--subtle-color);
+            }
+
+            p {
+                line-height: calc((var(--normal) + var(--large))/2);
+            }
+
+
+            a {
+                text-decoration: none;
+                color: var(--color-light-blue);
+                font-weight: var(--fw-bolder);
+            }
+
+            a:visited {
+                color: var(--color-deep-purple)
+            }
+
+            img {
+                display: block;
+                margin-block: var(--normal);
+            }
+
             section {
                 display: flex;
                 flex-direction: row;
@@ -16,6 +42,7 @@
 
                 & a {
                     font-size: var(--fs-larger);
+                    font-weight: var(--fw-bolder);
                 }
 
                 & .previous {
@@ -47,11 +74,11 @@
 
     <section>
         {{if .PrevPageUrl}}
-            <a class="previous" href="{{.PrevPageUrl}}">Prev: {{.PrevPageLabel}}</a>
+            <a class="previous" href="{{.PrevPageUrl}}"><< {{.PrevPageLabel}}</a>
         {{end}}
         <span></span>
         {{if .NextPageUrl}}
-            <a class="next" href="{{.NextPageUrl}}">Next: {{.NextPageLabel}}</a>
+            <a class="next" href="{{.NextPageUrl}}">{{.NextPageLabel}} >></a>
         {{end}}
     </section>
 

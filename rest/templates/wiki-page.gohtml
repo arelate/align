@@ -14,7 +14,7 @@
                 color: var(--subtle-color);
             }
 
-            section {
+            section.prev-next-buttons {
                 display: flex;
                 flex-direction: row;
                 width: 100%;
@@ -46,21 +46,22 @@
     </head>
     <body>
 
-    <h1>{{.Title}}</h1>
 
-    {{range .Entities}}
-        {{.}}
-    {{end}}
+        <h1>{{.Title}}</h1>
 
-    <section>
-        {{if .PrevPageUrl}}
-            <a class="previous" href="{{.PrevPageUrl}}"><< {{.PrevPageLabel}}</a>
+        {{range .Entities}}
+            {{.}}
         {{end}}
-        <span></span>
-        {{if .NextPageUrl}}
-            <a class="next" href="{{.NextPageUrl}}">{{.NextPageLabel}} >></a>
-        {{end}}
-    </section>
+
+        <section class="prev-next-buttons">
+            {{if .PrevPageUrl}}
+                <a class="previous" href="{{.PrevPageUrl}}"><< {{.PrevPageLabel}}</a>
+            {{end}}
+            <span></span>
+            {{if .NextPageUrl}}
+                <a class="next" href="{{.NextPageUrl}}">{{.NextPageLabel}} >></a>
+            {{end}}
+        </section>
 
     </body>
     </html>

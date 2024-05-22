@@ -66,12 +66,16 @@
                 display: flex;
             }
 
+            h2.subtle {
+                color: var(--subtle-color)
+            }
+
         </style>
     </head>
     <body>
 
-    <h1>{{.WikiPageName}}</h1>
-    <h2>{{.PageTitle}}</h2>
+    <h1>{{.PageTitle}}</h1>
+    <h2 class="subtle">{{.WikiPageName}}</h2>
 
     <ul class="dates">
         <li>

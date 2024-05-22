@@ -5,6 +5,7 @@ import (
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
+	"io"
 	"net/http"
 	"net/url"
 	"path"
@@ -52,26 +53,36 @@ func GetPage(slug, page string, force bool) error {
 		return nil
 	}
 
-	u := ign_integration.WikiUrl(slug, page)
-
-	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
-	if err != nil {
-		return gsca.EndWithError(err)
-	}
-
-	req.Header.Set("User-Agent", userAgent)
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return gsca.EndWithError(err)
-	}
-	defer resp.Body.Close()
-
-	if err := kv.Set(page, resp.Body); err != nil {
+	if err := getSetPageContent(kv, slug, page, nil); err != nil {
 		return gsca.EndWithError(err)
 	}
 
 	gsca.EndWithResult("done")
 
 	return nil
+}
+
+func getSetPageContent(kv kvas.KeyValues, slug, page string, dst io.Writer) error {
+
+	u := ign_integration.WikiUrl(slug, page)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("User-Agent", userAgent)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	var rdr io.Reader = resp.Body
+	if dst != nil {
+		rdr = io.TeeReader(resp.Body, dst)
+	}
+
+	return kv.Set(page, rdr)
 }

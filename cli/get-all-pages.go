@@ -1,14 +1,16 @@
 package cli
 
 import (
+	"bytes"
 	"encoding/json"
-	"errors"
 	"github.com/arelate/align/paths"
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
 	"net/url"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -36,16 +38,27 @@ func GetAllPages(slug string, throttle int64, force bool) error {
 	gapa := nod.Begin("getting all pages for %s...", slug)
 	defer gapa.End()
 
-	sdd, err := paths.AbsDataSlugDir(slug)
+	spd, err := paths.AbsPagesSlugDir(slug)
 	if err != nil {
 		return gapa.EndWithError(err)
 	}
 
-	kv, err := kvas.ConnectLocal(sdd, kvas.JsonExt)
+	skv, err := kvas.ConnectLocal(spd, kvas.HtmlExt)
 	if err != nil {
 		return gapa.EndWithError(err)
 	}
 
+	rpd, err := paths.AbsDataSlugDir(slug)
+	if err != nil {
+		return gapa.EndWithError(err)
+	}
+
+	rkv, err := kvas.ConnectLocal(rpd, kvas.JsonExt)
+	if err != nil {
+		return gapa.EndWithError(err)
+	}
+
+	//pages := map[string]bool{mainPage: false}
 	pages := map[string]bool{mainPage: false}
 
 	for morePages(pages) {
@@ -56,12 +69,16 @@ func GetAllPages(slug string, throttle int64, force bool) error {
 			return gapa.EndWithError(err)
 		}
 
-		urls, err := getUrls(kv, slug, page, throttle, force)
+		urls, err := getUrls(skv, rkv, slug, page, throttle, force)
 		if err != nil {
 			return gapa.EndWithError(err)
 		}
 
 		for _, u := range urls {
+			u, err = url.PathUnescape(u)
+			if err != nil {
+				return gapa.EndWithError(err)
+			}
 			if got := pages[u]; !got {
 				pages[u] = false
 			}
@@ -92,35 +109,57 @@ func morePages(pages map[string]bool) bool {
 	return false
 }
 
-func getUrls(kv kvas.KeyValues, slug, page string, throttle int64, force bool) ([]string, error) {
-	if err := GetPage(slug, page, force); err != nil {
-		return nil, err
+func getUrls(skv, rkv kvas.KeyValues, slug, page string, throttle int64, force bool) ([]string, error) {
+
+	gua := nod.Begin("getting page and data for %s...", filepath.Join(slug, page))
+	defer gua.End()
+
+	var err error
+	var bts []byte
+
+	gotPage, gotData := false, false
+
+	buf := bytes.NewBuffer(bts)
+
+	if !skv.Has(page) || force {
+		err = getSetPageContent(skv, slug, page, buf)
+		// throttle requests
+		time.Sleep(time.Duration(throttle) * time.Millisecond)
+	} else {
+		gotPage = true
+		src, err := skv.Get(page)
+		if err != nil {
+			return nil, err
+		}
+		_, err = buf.ReadFrom(src)
+		src.Close()
 	}
-
-	if err := GetData(slug, page, force); err != nil {
-		return nil, err
-	}
-
-	// throttle requests
-	time.Sleep(time.Duration(throttle) * time.Millisecond)
-
-	if err := kv.IndexRefresh(); err != nil {
-		return nil, err
-	}
-
-	wikiPage, err := kv.Get(page)
 	if err != nil {
 		return nil, err
 	}
 
-	if wikiPage == nil {
-		return nil, errors.New("page not found: " + page)
+	data := ""
+
+	if !rkv.Has(page) || force {
+		data, err = getSetReducedContent(page, buf, rkv)
+	} else {
+		gotData = true
+		rrc, err := rkv.Get(page)
+		if err != nil {
+			return nil, err
+		}
+
+		buf.Reset()
+		_, err = buf.ReadFrom(rrc)
+		rrc.Close()
+		data = buf.String()
+	}
+	if err != nil {
+		return nil, err
 	}
 
-	defer wikiPage.Close()
-
 	var wikiProps ign_integration.WikiProps
-	if err := json.NewDecoder(wikiPage).Decode(&wikiProps); err != nil {
+	if err := json.NewDecoder(strings.NewReader(data)).Decode(&wikiProps); err != nil {
 		return nil, err
 	}
 
@@ -138,6 +177,13 @@ func getUrls(kv kvas.KeyValues, slug, page string, throttle int64, force bool) (
 		}
 		urls = append(urls, purls...)
 	}
+
+	result := "done"
+	if gotPage && gotData {
+		result = "already exist"
+	}
+
+	gua.EndWithResult(result)
 
 	return urls, nil
 }

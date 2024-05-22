@@ -8,6 +8,7 @@ import (
 	"github.com/boggydigital/nod"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
+	"io"
 	"net/url"
 	"path"
 	"strings"
@@ -52,6 +53,7 @@ func GetData(slug, page string, force bool) error {
 	}
 
 	if rkv.Has(page) && !force {
+		rca.EndWithResult("already exist")
 		return nil
 	}
 
@@ -65,7 +67,12 @@ func GetData(slug, page string, force bool) error {
 		return rca.EndWithError(err)
 	}
 
-	if err := getSetReducedContent(page, skv, rkv); err != nil {
+	src, err := skv.Get(page)
+	if err != nil {
+		return rca.EndWithError(err)
+	}
+
+	if _, err := getSetReducedContent(page, src, rkv); err != nil {
 		return rca.EndWithError(err)
 	}
 
@@ -74,25 +81,19 @@ func GetData(slug, page string, force bool) error {
 	return nil
 }
 
-func getSetReducedContent(page string, skv, rkv kvas.KeyValues) error {
+func getSetReducedContent(page string, src io.Reader, kv kvas.KeyValues) (string, error) {
 
-	sc, err := skv.Get(page)
+	body, err := html.Parse(src)
 	if err != nil {
-		return err
-	}
-	defer sc.Close()
-
-	body, err := html.Parse(sc)
-	if err != nil {
-		return err
+		return "", err
 	}
 
 	if nextDataNode := match_node.Match(body, &nextDataMatcher{}); nextDataNode != nil && nextDataNode.FirstChild != nil {
 		data := fixDataProblems(nextDataNode.FirstChild.Data)
-		return rkv.Set(page, strings.NewReader(data))
+		return data, kv.Set(page, strings.NewReader(data))
 	}
 
-	return ErrReducedContentNotPresent
+	return "", ErrReducedContentNotPresent
 }
 
 type nextDataMatcher struct{}

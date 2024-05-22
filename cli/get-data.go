@@ -36,6 +36,11 @@ func GetData(slug, page string, force bool) error {
 	rca := nod.Begin("reducing page %s...", path.Join(slug, page))
 	defer rca.End()
 
+	page, err := url.PathUnescape(page)
+	if err != nil {
+		return rca.EndWithError(err)
+	}
+
 	rpd, err := paths.AbsDataSlugDir(slug)
 	if err != nil {
 		return rca.EndWithError(err)

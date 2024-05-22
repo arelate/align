@@ -51,6 +51,11 @@ func GetAllPages(slug string, throttle int64, force bool) error {
 	for morePages(pages) {
 		page := nextPage(pages)
 
+		page, err = url.PathUnescape(page)
+		if err != nil {
+			return gapa.EndWithError(err)
+		}
+
 		urls, err := getUrls(kv, slug, page, throttle, force)
 		if err != nil {
 			return gapa.EndWithError(err)

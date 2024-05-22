@@ -78,6 +78,10 @@ func rewriteImageLinks(html string) string {
 	return strings.Replace(html, "https://oyster.ignimgs.com/mediawiki/apis.ign.com", "/image", -1)
 }
 
+func rewriteOriginLinks(html string) string {
+	return strings.Replace(html, "https://www.ign.com", "", -1)
+}
+
 func NewWikiPageViewModel(wp *ign_integration.WikiProps) *WikiPageViewModel {
 	page := wp.Props.PageProps.Page
 
@@ -90,7 +94,10 @@ func NewWikiPageViewModel(wp *ign_integration.WikiProps) *WikiPageViewModel {
 	}
 
 	for _, he := range wp.HTMLEntities() {
-		wpvm.Entities = append(wpvm.Entities, template.HTML(rewriteImageLinks(he.Values.Html)))
+		content := he.Values.Html
+		content = rewriteOriginLinks(content)
+		content = rewriteImageLinks(content)
+		wpvm.Entities = append(wpvm.Entities, template.HTML(content))
 
 		imagesContent := ""
 		for _, iv := range he.ImageValues {

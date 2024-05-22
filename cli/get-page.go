@@ -32,6 +32,11 @@ func GetPage(slug, page string, force bool) error {
 	gsca := nod.Begin("getting source page %s...", path.Join(slug, page))
 	defer gsca.End()
 
+	page, err := url.PathUnescape(page)
+	if err != nil {
+		return gsca.EndWithError(err)
+	}
+
 	spd, err := paths.AbsPagesSlugDir(slug)
 	if err != nil {
 		return gsca.EndWithError(err)

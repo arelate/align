@@ -86,6 +86,20 @@
             color: var(--color-light-green)
         }
 
+        output {
+            & a {
+                background-color: var(--color-amber);
+                color: var(--background-color);
+                padding: var(--xx-small) var(--x-small);
+                border-radius: var(--border-radius);
+
+                &:visited {
+                    background-color: var(--color-light-green);
+                    color: var(--background-color);
+                }
+            }
+        }
+
         img {
             display: block;
             margin-block: var(--normal);

@@ -2,7 +2,6 @@ package rest
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/arelate/align/paths"
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/kvas"
@@ -30,12 +29,6 @@ func GetWikisSlugPage(w http.ResponseWriter, r *http.Request) {
 
 	slug := r.PathValue("slug")
 	page := r.PathValue("page")
-
-	if page == "" {
-		mainPageUrl := fmt.Sprintf("/wikis/%s/Main_Page", slug)
-		http.Redirect(w, r, mainPageUrl, http.StatusPermanentRedirect)
-		return
-	}
 
 	if _, ok := keyValues[slug]; !ok {
 		sdd, err := paths.AbsDataSlugDir(slug)
@@ -68,7 +61,7 @@ func GetWikisSlugPage(w http.ResponseWriter, r *http.Request) {
 
 	wpvm := NewWikiPageViewModel(&wikiProps)
 
-	if err := tmpl.ExecuteTemplate(w, "wiki-page", wpvm); err != nil {
+	if err := tmpl.ExecuteTemplate(w, "wikis-slug-page", wpvm); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

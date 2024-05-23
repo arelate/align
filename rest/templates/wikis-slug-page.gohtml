@@ -1,0 +1,53 @@
+{{define "wikis-slug-page"}}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta name='color-scheme' content='dark light'>
+        <title>{{.PageTitle}} - {{.WikiPageName}}</title>
+        {{template "css-base"}}
+    </head>
+    <body>
+
+    <h1>{{.PageTitle}}</h1>
+    <h2 class="subtle"><a href="/wikis/{{.Slug}}">{{.WikiPageName}}</a></h2>
+
+    <ul class="dates">
+        <li>
+            <span>Pub:</span>
+            <time>{{.PublishDate}}</time>
+        </li>
+        <li>
+            <span>Upd:</span>
+            <time>{{.UpdatedAt}}</time>
+        </li>
+    </ul>
+
+    {{range .Entities}}
+        <output>
+            {{.}}
+        </output>
+    {{end}}
+
+    <section class="prev-next-buttons">
+        {{if .PrevPageUrl}}
+            <button>
+                <a class="previous" href="{{.PrevPageUrl}}">
+                    {{.PrevPageLabel}}
+                </a>
+            </button>
+        {{end}}
+        {{if .NextPageUrl}}
+            <button>
+                <a class="next" href="{{.NextPageUrl}}">
+                    {{.NextPageLabel}}
+                </a>
+            </button>
+        {{end}}
+
+    </section>
+
+    </body>
+    </html>
+{{end}}

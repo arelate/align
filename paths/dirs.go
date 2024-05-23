@@ -8,17 +8,19 @@ import (
 const DefaultAlignRootDir = "/usr/share/align"
 
 const (
-	Backups  pathways.AbsDir = "backups"
-	Images   pathways.AbsDir = "images"
-	Metadata pathways.AbsDir = "metadata"
-	Pages    pathways.AbsDir = "pages"
-	Data     pathways.AbsDir = "data"
+	Backups    pathways.AbsDir = "backups"
+	Images     pathways.AbsDir = "images"
+	Metadata   pathways.AbsDir = "metadata"
+	Navigation pathways.AbsDir = "navigation"
+	Pages      pathways.AbsDir = "pages"
+	Data       pathways.AbsDir = "data"
 )
 
 var AllAbsDirs = []pathways.AbsDir{
 	Backups,
 	Images,
 	Metadata,
+	Navigation,
 	Pages,
 	Data,
 }

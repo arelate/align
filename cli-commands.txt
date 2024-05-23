@@ -22,6 +22,10 @@ get-images
     page
     force
 
+get-navigation
+    slug^*
+    force
+
 get-page
     slug^*
     page

@@ -19,8 +19,16 @@ EXPOSE 1981
 
 # backups
 VOLUME /usr/share/align/backups
+# data
+VOLUME /usr/share/align/data
+# images
+VOLUME /usr/share/align/images
 # metadata
 VOLUME /usr/share/align/metadata
+# navigation
+VOLUME /usr/share/align/navigation
+# pages
+VOLUME /usr/share/align/pages
 
 ENTRYPOINT ["/usr/bin/align"]
 CMD ["serve","-port", "1981", "-stderr"]

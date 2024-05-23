@@ -7,6 +7,7 @@ import (
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
+	"github.com/boggydigital/pathways"
 	"io"
 	"net/url"
 	"path/filepath"
@@ -117,7 +118,8 @@ func morePages(pages map[string]bool) bool {
 // 1) Get page - from the storage if it exists or origin
 // 2) Get data - from the storage if it exists or extracted
 // from the buffered data result of getting page
-// 3) Decode data JSON and get all the links - previous, next pages and <a href>
+// 3) Get navigation - only for the main page and only from results
+// 4) Decode data JSON and get all the links - previous, next pages and <a href>
 func getUrls(skv, rkv kvas.KeyValues, slug, page string, throttle int64, force bool) ([]string, error) {
 
 	gua := nod.Begin("getting page and data for %s...", filepath.Join(slug, page))
@@ -166,6 +168,23 @@ func getUrls(skv, rkv kvas.KeyValues, slug, page string, throttle int64, force b
 	}
 	if err != nil {
 		return nil, err
+	}
+
+	if page == mainPage && data != "" {
+
+		snd, err := pathways.GetAbsDir(paths.Navigation)
+		if err != nil {
+			return nil, err
+		}
+
+		nkv, err := kvas.ConnectLocal(snd, kvas.JsonExt)
+		if err != nil {
+			return nil, err
+		}
+
+		if err := getSetNavigation(slug, data, nkv); err != nil {
+			return nil, err
+		}
 	}
 
 	var wikiProps ign_integration.WikiProps

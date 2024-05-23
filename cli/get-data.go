@@ -17,7 +17,7 @@ import (
 const nextDataScriptId = "__NEXT_DATA__"
 
 var (
-	ErrReducedContentNotPresent = errors.New("reduced content not present")
+	ErrDataNotFound = errors.New("data not found")
 )
 
 func GetDataHandler(u *url.URL) error {
@@ -94,7 +94,7 @@ func getSetReducedContent(page string, src io.Reader, kv kvas.KeyValues) (string
 		return data, kv.Set(page, reader)
 	}
 
-	return "", ErrReducedContentNotPresent
+	return "", ErrDataNotFound
 }
 
 type nextDataMatcher struct{}

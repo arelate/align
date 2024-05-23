@@ -52,6 +52,7 @@ func main() {
 		"get-all-pages":  cli.GetAllPagesHandler,
 		"get-data":       cli.GetDataHandler,
 		"get-images":     cli.GetImagesHandler,
+		"get-navigation": cli.GetNavigationHandler,
 		"get-page":       cli.GetPageHandler,
 		"reduce":         cli.ReduceHandler,
 		"serve":          cli.ServeHandler,

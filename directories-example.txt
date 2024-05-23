@@ -1,10 +1,12 @@
 backups
     /usr/share/align/backups
+data
+    /usr/share/align/data
 images
     /usr/share/align/images
 metadata
     /usr/share/align/metadata
-data
-    /usr/share/align/data
+navigation
+    /use/share/align/navigation
 pages
     /usr/share/align/pages

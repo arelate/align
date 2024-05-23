@@ -90,7 +90,8 @@ func getSetReducedContent(page string, src io.Reader, kv kvas.KeyValues) (string
 
 	if nextDataNode := match_node.Match(body, &nextDataMatcher{}); nextDataNode != nil && nextDataNode.FirstChild != nil {
 		data := fixDataProblems(nextDataNode.FirstChild.Data)
-		return data, kv.Set(page, strings.NewReader(data))
+		reader := strings.NewReader(data)
+		return data, kv.Set(page, reader)
 	}
 
 	return "", ErrReducedContentNotPresent

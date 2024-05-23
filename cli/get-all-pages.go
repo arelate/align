@@ -7,6 +7,7 @@ import (
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
+	"io"
 	"net/url"
 	"path/filepath"
 	"strconv"
@@ -109,50 +110,59 @@ func morePages(pages map[string]bool) bool {
 	return false
 }
 
+// getUrls implements getting page, data, navigation in one function
+// it uses the same principal code as relevant cmds, and supports
+// getting existing data instead of fetching it every time.
+// Here's the sequence:
+// 1) Get page - from the storage if it exists or origin
+// 2) Get data - from the storage if it exists or extracted
+// from the buffered data result of getting page
+// 3) Decode data JSON and get all the links - previous, next pages and <a href>
 func getUrls(skv, rkv kvas.KeyValues, slug, page string, throttle int64, force bool) ([]string, error) {
 
 	gua := nod.Begin("getting page and data for %s...", filepath.Join(slug, page))
 	defer gua.End()
 
 	var err error
-	var bts []byte
+	var sr io.Reader
 
 	gotPage, gotData := false, false
 
-	buf := bytes.NewBuffer(bts)
-
 	if !skv.Has(page) || force {
+		buf := bytes.NewBuffer(make([]byte, 0, 512))
 		err = getSetPageContent(skv, slug, page, buf)
+		sr = buf
 		// throttle requests
 		time.Sleep(time.Duration(throttle) * time.Millisecond)
 	} else {
 		gotPage = true
-		src, err := skv.Get(page)
+		sr, err = skv.Get(page)
 		if err != nil {
 			return nil, err
 		}
-		_, err = buf.ReadFrom(src)
-		src.Close()
 	}
 	if err != nil {
 		return nil, err
+	}
+	if src, ok := sr.(io.ReadCloser); ok {
+		defer src.Close()
 	}
 
 	data := ""
 
 	if !rkv.Has(page) || force {
-		data, err = getSetReducedContent(page, buf, rkv)
+		data, err = getSetReducedContent(page, sr, rkv)
 	} else {
 		gotData = true
 		rrc, err := rkv.Get(page)
 		if err != nil {
 			return nil, err
 		}
+		defer rrc.Close()
+		sb := new(strings.Builder)
+		_, err = io.Copy(sb, rrc)
+		data = sb.String()
 
-		buf.Reset()
-		_, err = buf.ReadFrom(rrc)
-		rrc.Close()
-		data = buf.String()
 	}
 	if err != nil {
 		return nil, err

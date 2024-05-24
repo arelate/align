@@ -42,37 +42,27 @@ func GetData(slug, page string, force bool) error {
 		return rca.EndWithError(err)
 	}
 
-	rpd, err := paths.AbsDataSlugDir(slug)
+	dkv, err := paths.DataKeyValues(slug)
 	if err != nil {
 		return rca.EndWithError(err)
 	}
 
-	rkv, err := kvas.ConnectLocal(rpd, kvas.JsonExt)
-	if err != nil {
-		return rca.EndWithError(err)
-	}
-
-	if rkv.Has(page) && !force {
+	if dkv.Has(page) && !force {
 		rca.EndWithResult("already exist")
 		return nil
 	}
 
-	spd, err := paths.AbsPagesSlugDir(slug)
+	pkv, err := paths.PagesKeyValues(slug)
 	if err != nil {
 		return rca.EndWithError(err)
 	}
 
-	skv, err := kvas.ConnectLocal(spd, kvas.HtmlExt)
+	src, err := pkv.Get(page)
 	if err != nil {
 		return rca.EndWithError(err)
 	}
 
-	src, err := skv.Get(page)
-	if err != nil {
-		return rca.EndWithError(err)
-	}
-
-	if _, err := getSetReducedContent(page, src, rkv); err != nil {
+	if _, err := getSetReducedContent(page, src, dkv); err != nil {
 		return rca.EndWithError(err)
 	}
 

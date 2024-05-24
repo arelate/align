@@ -27,13 +27,9 @@ func GetImages(kv kvas.KeyValues, slug, page string, force bool) error {
 	gia := nod.NewProgress("getting images for %s...", filepath.Join(slug, page))
 	defer gia.End()
 
+	var err error
 	if kv == nil {
-		sdd, err := paths.AbsDataSlugDir(slug)
-		if err != nil {
-			return gia.EndWithError(err)
-		}
-
-		kv, err = kvas.ConnectLocal(sdd, kvas.JsonExt)
+		kv, err = paths.DataKeyValues(slug)
 		if err != nil {
 			return gia.EndWithError(err)
 		}

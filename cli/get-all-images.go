@@ -2,7 +2,6 @@ package cli
 
 import (
 	"github.com/arelate/align/paths"
-	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
 	"net/url"
 )
@@ -21,12 +20,7 @@ func GetAllImages(slug string, force bool) error {
 	gaia := nod.NewProgress("getting all images for %s...", slug)
 	defer gaia.End()
 
-	sdd, err := paths.AbsDataSlugDir(slug)
-	if err != nil {
-		return gaia.EndWithError(err)
-	}
-
-	kv, err := kvas.ConnectLocal(sdd, kvas.JsonExt)
+	kv, err := paths.DataKeyValues(slug)
 	if err != nil {
 		return gaia.EndWithError(err)
 	}

@@ -38,12 +38,7 @@ func GetPage(slug, page string, force bool) error {
 		return gsca.EndWithError(err)
 	}
 
-	spd, err := paths.AbsPagesSlugDir(slug)
-	if err != nil {
-		return gsca.EndWithError(err)
-	}
-
-	kv, err := kvas.ConnectLocal(spd, kvas.HtmlExt)
+	kv, err := paths.PagesKeyValues(slug)
 	if err != nil {
 		return gsca.EndWithError(err)
 	}

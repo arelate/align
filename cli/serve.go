@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"github.com/arelate/align/render"
 	"github.com/arelate/align/rest"
 	"github.com/boggydigital/nod"
 	"net/http"
@@ -30,7 +31,7 @@ func Serve(port int, stderr bool) error {
 
 	rest.HandleFuncs()
 
-	if err := rest.Init(); err != nil {
+	if err := render.Init(); err != nil {
 		return err
 	}
 

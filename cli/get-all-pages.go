@@ -40,22 +40,12 @@ func GetAllPages(slug string, throttle int64, force bool) error {
 	gapa := nod.Begin("getting all pages for %s...", slug)
 	defer gapa.End()
 
-	spd, err := paths.AbsPagesSlugDir(slug)
+	pkv, err := paths.PagesKeyValues(slug)
 	if err != nil {
 		return gapa.EndWithError(err)
 	}
 
-	skv, err := kvas.ConnectLocal(spd, kvas.HtmlExt)
-	if err != nil {
-		return gapa.EndWithError(err)
-	}
-
-	rpd, err := paths.AbsDataSlugDir(slug)
-	if err != nil {
-		return gapa.EndWithError(err)
-	}
-
-	rkv, err := kvas.ConnectLocal(rpd, kvas.JsonExt)
+	dkv, err := paths.DataKeyValues(slug)
 	if err != nil {
 		return gapa.EndWithError(err)
 	}
@@ -71,7 +61,7 @@ func GetAllPages(slug string, throttle int64, force bool) error {
 			return gapa.EndWithError(err)
 		}
 
-		urls, err := getUrls(skv, rkv, slug, page, throttle, force)
+		urls, err := getUrls(pkv, dkv, slug, page, throttle, force)
 		if err != nil {
 			return gapa.EndWithError(err)
 		}

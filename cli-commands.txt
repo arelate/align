@@ -8,6 +8,15 @@
 
 backup
 
+gen-all-statics
+    slug^*
+    force
+
+gen-static-page
+    slug^*
+    page
+    force
+
 get-all-images
     slug^*
     force

@@ -42,12 +42,7 @@ func GetNavigation(slug string, force bool) error {
 		return nil
 	}
 
-	sdd, err := paths.AbsDataSlugDir(slug)
-	if err != nil {
-		return gna.EndWithError(err)
-	}
-
-	dkv, err := kvas.ConnectLocal(sdd, kvas.JsonExt)
+	dkv, err := paths.DataKeyValues(slug)
 	if err != nil {
 		return gna.EndWithError(err)
 	}

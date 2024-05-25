@@ -74,6 +74,11 @@ func getSetPageContent(kv kvas.KeyValues, slug, page string, dst io.Writer) erro
 	}
 	defer resp.Body.Close()
 
+	// only save successful results
+	if resp.StatusCode != http.StatusOK {
+		return nil
+	}
+
 	var rdr io.Reader = resp.Body
 	if dst != nil {
 		rdr = io.TeeReader(resp.Body, dst)

@@ -153,6 +153,11 @@ func getUrls(skv, rkv kvas.KeyValues, slug, page string, throttle int64, force b
 		defer src.Close()
 	}
 
+	// the page doesn't exist - no reason to try getting data
+	if sr == nil {
+		return nil, nil
+	}
+
 	data := ""
 
 	if !rkv.Has(page) || force {

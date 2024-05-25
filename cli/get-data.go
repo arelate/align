@@ -35,7 +35,7 @@ func GetData(slug, page string, force bool) error {
 		page = view_models.MainPage
 	}
 
-	rca := nod.Begin("reducing page %s...", path.Join(slug, page))
+	rca := nod.Begin("getting data for %s...", path.Join(slug, page))
 	defer rca.End()
 
 	page, err := url.PathUnescape(page)
@@ -61,6 +61,10 @@ func GetData(slug, page string, force bool) error {
 	src, err := pkv.Get(page)
 	if err != nil {
 		return rca.EndWithError(err)
+	}
+
+	if src == nil {
+		rca.EndWithResult("not found")
 	}
 
 	if _, err := getSetReducedContent(page, src, dkv); err != nil {

@@ -3,6 +3,7 @@ package cli
 import (
 	"errors"
 	"github.com/arelate/align/paths"
+	"github.com/arelate/align/render/view_models"
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/match_node"
 	"github.com/boggydigital/nod"
@@ -31,7 +32,7 @@ func GetDataHandler(u *url.URL) error {
 func GetData(slug, page string, force bool) error {
 
 	if page == "" {
-		page = mainPage
+		page = view_models.MainPage
 	}
 
 	rca := nod.Begin("reducing page %s...", path.Join(slug, page))

@@ -7,6 +7,8 @@ import (
 	"net/url"
 )
 
+const MainPage = "Main_Page"
+
 type WikisSlugViewModel struct {
 	GuideTitle string
 	Items      []template.HTML
@@ -36,7 +38,7 @@ func WikiNavigationHTML(slug string, wn ign_integration.WikiNavigation) string {
 
 	u := url.PathEscape(wn.Url)
 	if u == "" {
-		u = "Main_Page"
+		u = MainPage
 	}
 
 	link := fmt.Sprintf("<a href='/wikis/%s/%s'>%s</a>", slug, u, wn.Label)

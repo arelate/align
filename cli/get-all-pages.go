@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/arelate/align/paths"
+	"github.com/arelate/align/render/view_models"
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
@@ -51,7 +52,7 @@ func GetAllPages(slug string, throttle int64, force bool) error {
 	}
 
 	//pages := map[string]bool{mainPage: false}
-	pages := map[string]bool{mainPage: false}
+	pages := map[string]bool{view_models.MainPage: false}
 
 	for morePages(pages) {
 		page := nextPage(pages)
@@ -160,14 +161,14 @@ func getUrls(skv, rkv kvas.KeyValues, slug, page string, throttle int64, force b
 		return nil, err
 	}
 
-	if page == mainPage && data != "" {
+	if page == view_models.MainPage && data != "" {
 
 		snd, err := pathways.GetAbsDir(paths.Navigation)
 		if err != nil {
 			return nil, err
 		}
 
-		nkv, err := kvas.ConnectLocal(snd, kvas.JsonExt)
+		nkv, err := kvas.NewKeyValues(snd, kvas.JsonExt)
 		if err != nil {
 			return nil, err
 		}

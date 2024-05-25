@@ -3,6 +3,7 @@ package cli
 import (
 	"errors"
 	"github.com/arelate/align/paths"
+	"github.com/arelate/align/render/view_models"
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
 	"github.com/boggydigital/pathways"
@@ -32,7 +33,7 @@ func GetNavigation(slug string, force bool) error {
 		return gna.EndWithError(err)
 	}
 
-	nkv, err := kvas.ConnectLocal(snd, kvas.JsonExt)
+	nkv, err := kvas.NewKeyValues(snd, kvas.JsonExt)
 	if err != nil {
 		return gna.EndWithError(err)
 	}
@@ -47,7 +48,7 @@ func GetNavigation(slug string, force bool) error {
 		return gna.EndWithError(err)
 	}
 
-	mprc, err := dkv.Get(mainPage)
+	mprc, err := dkv.Get(view_models.MainPage)
 	if err != nil {
 		return gna.EndWithError(err)
 	}

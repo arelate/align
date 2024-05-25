@@ -31,7 +31,7 @@ var AllAbsDirs = []pathways.AbsDir{
 func slugKeyValues(slug string, absDir pathways.AbsDir, ext string) (kvas.KeyValues, error) {
 	if spd, err := pathways.GetAbsDir(absDir); err == nil {
 		aspd := filepath.Join(spd, slug)
-		return kvas.ConnectLocal(aspd, ext)
+		return kvas.NewKeyValues(aspd, ext)
 	} else {
 		return nil, err
 	}

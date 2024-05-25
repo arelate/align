@@ -52,4 +52,8 @@ serve
     port$*
     stderr$
 
+sync
+    slug^*
+    force
+
 version

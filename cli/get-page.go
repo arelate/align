@@ -2,6 +2,7 @@ package cli
 
 import (
 	"github.com/arelate/align/paths"
+	"github.com/arelate/align/render/view_models"
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
@@ -13,7 +14,6 @@ import (
 
 const (
 	userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
-	mainPage  = "Main_Page"
 )
 
 func GetPageHandler(u *url.URL) error {
@@ -27,7 +27,7 @@ func GetPageHandler(u *url.URL) error {
 func GetPage(slug, page string, force bool) error {
 
 	if page == "" {
-		page = mainPage
+		page = view_models.MainPage
 	}
 
 	gsca := nod.Begin("getting source page %s...", path.Join(slug, page))

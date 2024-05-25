@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"github.com/arelate/align/cli"
 	"github.com/arelate/align/paths"
+	"github.com/arelate/align/render"
 	"github.com/boggydigital/clo"
 	"github.com/boggydigital/nod"
 	"github.com/boggydigital/pathways"
@@ -58,10 +59,16 @@ func main() {
 		"get-page":        cli.GetPageHandler,
 		"reduce":          cli.ReduceHandler,
 		"serve":           cli.ServeHandler,
+		"sync":            cli.SyncHandler,
 		"version":         cli.VersionHandler,
 	})
 
 	if err := defs.AssertCommandsHaveHandlers(); err != nil {
+		_ = ea.EndWithError(err)
+		os.Exit(1)
+	}
+
+	if err := render.Init(); err != nil {
 		_ = ea.EndWithError(err)
 		os.Exit(1)
 	}

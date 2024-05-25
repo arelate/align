@@ -58,6 +58,11 @@ func GetData(slug, page string, force bool) error {
 		return rca.EndWithError(err)
 	}
 
+	if !pkv.Has(page) {
+		rca.EndWithResult("page not available")
+		return nil
+	}
+
 	src, err := pkv.Get(page)
 	if err != nil {
 		return rca.EndWithError(err)
@@ -85,8 +90,7 @@ func getSetReducedContent(page string, src io.Reader, kv kvas.KeyValues) (string
 
 	if nextDataNode := match_node.Match(body, &nextDataMatcher{}); nextDataNode != nil && nextDataNode.FirstChild != nil {
 		data := fixDataProblems(nextDataNode.FirstChild.Data)
-		reader := strings.NewReader(data)
-		return data, kv.Set(page, reader)
+		return data, kv.Set(page, strings.NewReader(data))
 	}
 
 	return "", ErrDataNotFound
@@ -114,3 +118,18 @@ func fixDataProblems(data string) string {
 
 	return fixedData
 }
+
+//func cutNextData(src io.Reader) (string, error) {
+//
+//	sb := new(strings.Builder)
+//	if _, err := io.Copy(sb, src); err != nil {
+//		return "", err
+//	}
+//
+//	if _, nd, ok := strings.Cut(sb.String(), "<script id=\"__NEXT_DATA__\" type=\"application/json\">"); ok {
+//		if nd, _, ok = strings.Cut(nd, "</script>"); ok {
+//			return nd, nil
+//		}
+//	}
+//	return "", ErrDataNotFound
+//}

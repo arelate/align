@@ -34,6 +34,12 @@ func GenAllStatics(slug string, force bool) error {
 	gasa.TotalInt(len(pages))
 
 	for _, page := range pages {
+
+		page, err = url.PathUnescape(page)
+		if err != nil {
+			return gasa.EndWithError(err)
+		}
+
 		if err := setStaticPage(slug, page, skv); err != nil {
 			return gasa.EndWithError(err)
 		}

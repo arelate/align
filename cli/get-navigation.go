@@ -72,6 +72,8 @@ func getSetNavigation(slug string, data string, kv kvas.KeyValues) error {
 	if _, rem, ok := strings.Cut(data, "\"navigation\":"); ok {
 		if nav, _, ok := strings.Cut(rem, ",\"videos:"); ok {
 			return kv.Set(slug, strings.NewReader(nav))
+		} else if nav, _, ok = strings.Cut(rem, ",\"ROOT_QUERY\":"); ok {
+			return kv.Set(slug, strings.NewReader(nav))
 		}
 	}
 	return ErrNavigationNotFound

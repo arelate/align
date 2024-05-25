@@ -5,6 +5,7 @@ import (
 	"github.com/arelate/align/render"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 func GetWikisSlugPage(w http.ResponseWriter, r *http.Request) {
@@ -15,6 +16,12 @@ func GetWikisSlugPage(w http.ResponseWriter, r *http.Request) {
 	page := r.PathValue("page")
 
 	var err error
+
+	page, err = url.PathUnescape(page)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	if _, ok := staticsKeyValues[slug]; !ok {
 		staticsKeyValues[slug], err = paths.StaticsKeyValues(slug)

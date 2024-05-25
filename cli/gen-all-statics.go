@@ -40,6 +40,11 @@ func GenAllStatics(slug string, force bool) error {
 			return gasa.EndWithError(err)
 		}
 
+		if !skv.Has(page) {
+			gasa.Increment()
+			continue
+		}
+
 		if err := setStaticPage(slug, page, skv); err != nil {
 			return gasa.EndWithError(err)
 		}

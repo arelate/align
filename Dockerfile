@@ -29,6 +29,8 @@ VOLUME /usr/share/align/metadata
 VOLUME /usr/share/align/navigation
 # pages
 VOLUME /usr/share/align/pages
+# statics
+VOLUME /usr/share/align/statics
 
 ENTRYPOINT ["/usr/bin/align"]
 CMD ["serve","-port", "1981", "-stderr"]

@@ -2,6 +2,7 @@ package render
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/arelate/align/paths"
 	"github.com/arelate/align/render/view_models"
 	"github.com/arelate/southern_light/ign_integration"
@@ -24,6 +25,10 @@ func WikisSlugPage(slug, page string, w io.Writer) error {
 	if err != nil {
 		return err
 	}
+	if wp == nil {
+		return errors.New("page not found: " + page)
+	}
+
 	defer wp.Close()
 
 	var wikiProps ign_integration.WikiProps

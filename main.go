@@ -51,6 +51,7 @@ func main() {
 		"backup":          cli.BackupHandler,
 		"gen-all-statics": cli.GenAllStaticsHandler,
 		"gen-static-page": cli.GenStaticPageHandler,
+		"gen-toc":         cli.GenTOCHandler,
 		"get-all-images":  cli.GetAllImagesHandler,
 		"get-all-pages":   cli.GetAllPagesHandler,
 		"get-data":        cli.GetDataHandler,

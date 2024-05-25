@@ -17,6 +17,10 @@ gen-static-page
     page
     force
 
+gen-toc
+    slug^*
+    force
+
 get-all-images
     slug^*
     force

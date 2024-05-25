@@ -28,7 +28,6 @@ func WikisSlugPage(slug, page string, w io.Writer) error {
 	if wp == nil {
 		return errors.New("page not found: " + page)
 	}
-
 	defer wp.Close()
 
 	var wikiProps ign_integration.WikiProps

@@ -11,11 +11,23 @@ func SyncHandler(u *url.URL) error {
 
 func Sync(slug string, force bool) error {
 
+	if err := GetPage(slug, "", force); err != nil {
+		return err
+	}
+
+	if err := GetNavigation(slug, force); err != nil {
+		return err
+	}
+
 	if err := GetAllPages(slug, defaultThrottleMs, force); err != nil {
 		return err
 	}
 
 	if err := GetAllImages(slug, force); err != nil {
+		return err
+	}
+
+	if err := GenTOC(slug, force); err != nil {
 		return err
 	}
 

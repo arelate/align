@@ -31,6 +31,11 @@ func GetAllImages(slug string, force bool) error {
 
 	for _, page := range pages {
 
+		page, err = url.PathUnescape(page)
+		if err != nil {
+			return gaia.EndWithError(err)
+		}
+
 		if err := GetImages(kv, slug, page, force); err != nil {
 			return gaia.EndWithError(err)
 		}

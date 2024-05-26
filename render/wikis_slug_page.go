@@ -35,7 +35,7 @@ func WikisSlugPage(slug, page string, w io.Writer) error {
 		return err
 	}
 
-	wpvm := view_models.NewWikiPageViewModel(&wikiProps)
+	wpvm := view_models.NewWikiPageViewModel(slug, &wikiProps)
 
 	if err := tmpl.ExecuteTemplate(w, "wikis-slug-page", wpvm); err != nil {
 		return err

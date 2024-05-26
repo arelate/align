@@ -27,11 +27,11 @@ func rewriteOriginLinks(html string) string {
 	return strings.Replace(html, "https://www.ign.com", "", -1)
 }
 
-func NewWikiPageViewModel(wp *ign_integration.WikiProps) *WikisSlugPageViewModel {
+func NewWikiPageViewModel(slug string, wp *ign_integration.WikiProps) *WikisSlugPageViewModel {
 	page := wp.Props.PageProps.Page
 
 	wpvm := &WikisSlugPageViewModel{
-		Slug:         page.Slug,
+		Slug:         slug,
 		WikiPageName: page.Name,
 		PageTitle:    page.Page.Title,
 		PublishDate:  page.PublishDate.Format("Jan 2, 2006"),

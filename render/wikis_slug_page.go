@@ -21,6 +21,10 @@ func WikisSlugPage(slug, page string, w io.Writer) error {
 
 	kv := keyValues[slug]
 
+	if err := kv.IndexRefresh(); err != nil {
+		return err
+	}
+
 	wp, err := kv.Get(page)
 	if err != nil {
 		return err

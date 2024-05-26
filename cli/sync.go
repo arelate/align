@@ -1,6 +1,9 @@
 package cli
 
-import "net/url"
+import (
+	"github.com/arelate/align/render/view_models"
+	"net/url"
+)
 
 func SyncHandler(u *url.URL) error {
 	slug := u.Query().Get("slug")
@@ -11,7 +14,11 @@ func SyncHandler(u *url.URL) error {
 
 func Sync(slug string, force bool) error {
 
-	if err := GetPage(slug, "", force); err != nil {
+	if err := GetPage(slug, view_models.MainPage, force); err != nil {
+		return err
+	}
+
+	if err := GetData(slug, view_models.MainPage, force); err != nil {
 		return err
 	}
 

@@ -6,18 +6,11 @@ import (
 	"github.com/arelate/align/paths"
 	"github.com/arelate/align/render/view_models"
 	"github.com/arelate/southern_light/ign_integration"
-	"github.com/boggydigital/kvas"
-	"github.com/boggydigital/pathways"
 )
 
 func WikiNavigation(slug string) ([]ign_integration.WikiNavigation, error) {
 
-	snd, err := pathways.GetAbsDir(paths.Navigation)
-	if err != nil {
-		return nil, err
-	}
-
-	nkv, err := kvas.NewKeyValues(snd, kvas.JsonExt)
+	nkv, err := paths.NavigationKeyValues()
 	if err != nil {
 		return nil, err
 	}

@@ -14,6 +14,7 @@ func HandleFuncs() {
 	patternHandlers := map[string]http.Handler{
 
 		"GET /wikis/{slug}":        Log(http.HandlerFunc(GetWikisSlug)),
+		"GET /wikis/{slug}/":       Log(http.HandlerFunc(GetWikisSlug)),
 		"GET /wikis/{slug}/{page}": Log(http.HandlerFunc(GetWikisSlugPage)),
 
 		"GET /image/{slug}/{a}/{bc}/{filename}": Log(http.HandlerFunc(GetImage)),

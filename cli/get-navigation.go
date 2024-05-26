@@ -6,7 +6,6 @@ import (
 	"github.com/arelate/align/render/view_models"
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
-	"github.com/boggydigital/pathways"
 	"io"
 	"net/url"
 	"strings"
@@ -28,12 +27,7 @@ func GetNavigation(slug string, force bool) error {
 	gna := nod.Begin("getting navigation for %s...", slug)
 	defer gna.End()
 
-	snd, err := pathways.GetAbsDir(paths.Navigation)
-	if err != nil {
-		return gna.EndWithError(err)
-	}
-
-	nkv, err := kvas.NewKeyValues(snd, kvas.JsonExt)
+	nkv, err := paths.NavigationKeyValues()
 	if err != nil {
 		return gna.EndWithError(err)
 	}

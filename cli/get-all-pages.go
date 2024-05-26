@@ -9,7 +9,6 @@ import (
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/kvas"
 	"github.com/boggydigital/nod"
-	"github.com/boggydigital/pathways"
 	"io"
 	"net/url"
 	"path/filepath"
@@ -181,12 +180,7 @@ func getUrls(skv, rkv kvas.KeyValues, slug, page string, throttle int64, force b
 
 	if page == view_models.MainPage && data != "" {
 
-		snd, err := pathways.GetAbsDir(paths.Navigation)
-		if err != nil {
-			return nil, err
-		}
-
-		nkv, err := kvas.NewKeyValues(snd, kvas.JsonExt)
+		nkv, err := paths.NavigationKeyValues()
 		if err != nil {
 			return nil, err
 		}

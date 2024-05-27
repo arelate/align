@@ -31,6 +31,10 @@ func GenAllStatics(slug string, force bool) error {
 		return gasa.EndWithError(err)
 	}
 
+	if err := setStaticTOC(slug, skv); err != nil {
+		return gasa.EndWithError(err)
+	}
+
 	gasa.TotalInt(len(pages))
 
 	for _, page := range pages {

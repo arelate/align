@@ -10,7 +10,6 @@ backup
 
 gen-all-statics
     slug^*
-    force
 
 gen-static-page
     slug^*
@@ -51,6 +50,8 @@ get-data
 
 reduce
     slug^*
+
+regen-all-statics
 
 serve
     port$*

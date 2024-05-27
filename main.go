@@ -48,20 +48,21 @@ func main() {
 	}
 
 	clo.HandleFuncs(map[string]clo.Handler{
-		"backup":          cli.BackupHandler,
-		"gen-all-statics": cli.GenAllStaticsHandler,
-		"gen-static-page": cli.GenStaticPageHandler,
-		"gen-toc":         cli.GenTOCHandler,
-		"get-all-images":  cli.GetAllImagesHandler,
-		"get-all-pages":   cli.GetAllPagesHandler,
-		"get-data":        cli.GetDataHandler,
-		"get-images":      cli.GetImagesHandler,
-		"get-navigation":  cli.GetNavigationHandler,
-		"get-page":        cli.GetPageHandler,
-		"reduce":          cli.ReduceHandler,
-		"serve":           cli.ServeHandler,
-		"sync":            cli.SyncHandler,
-		"version":         cli.VersionHandler,
+		"backup":            cli.BackupHandler,
+		"gen-all-statics":   cli.GenAllStaticsHandler,
+		"gen-static-page":   cli.GenStaticPageHandler,
+		"gen-toc":           cli.GenTOCHandler,
+		"get-all-images":    cli.GetAllImagesHandler,
+		"get-all-pages":     cli.GetAllPagesHandler,
+		"get-data":          cli.GetDataHandler,
+		"get-images":        cli.GetImagesHandler,
+		"get-navigation":    cli.GetNavigationHandler,
+		"get-page":          cli.GetPageHandler,
+		"reduce":            cli.ReduceHandler,
+		"regen-all-statics": cli.RegenAllStaticsHandler,
+		"serve":             cli.ServeHandler,
+		"sync":              cli.SyncHandler,
+		"version":           cli.VersionHandler,
 	})
 
 	if err := defs.AssertCommandsHaveHandlers(); err != nil {

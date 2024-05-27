@@ -9,12 +9,11 @@ import (
 
 func GenAllStaticsHandler(u *url.URL) error {
 	slug := u.Query().Get("slug")
-	force := u.Query().Has("force")
 
-	return GenAllStatics(slug, force)
+	return GenAllStatics(slug)
 }
 
-func GenAllStatics(slug string, force bool) error {
+func GenAllStatics(slug string) error {
 
 	gasa := nod.NewProgress("generating all statics for %s...", slug)
 	defer gasa.End()

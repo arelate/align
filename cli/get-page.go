@@ -59,7 +59,7 @@ func GetPage(slug, page string, force bool) error {
 
 func getSetPageContent(kv kvas.KeyValues, slug, page string, dst io.Writer) error {
 
-	u := ign_integration.WikiUrl(slug, page)
+	u := ign_integration.WikiPageUrl(slug, page)
 
 	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
 	if err != nil {

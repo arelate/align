@@ -27,6 +27,10 @@ func rewriteOriginLinks(html string) string {
 	return strings.Replace(html, "https://www.ign.com", "", -1)
 }
 
+func disableStyles(html string) string {
+	return strings.Replace(html, "style=", "data-style=", -1)
+}
+
 func NewWikiPageViewModel(slug string, wp *ign_integration.WikiProps) *WikisSlugPageViewModel {
 	page := wp.Props.PageProps.Page
 
@@ -40,8 +44,11 @@ func NewWikiPageViewModel(slug string, wp *ign_integration.WikiProps) *WikisSlug
 
 	for _, he := range wp.HTMLEntities() {
 		content := he.Values.Html
+
 		content = rewriteOriginLinks(content)
 		content = rewriteImageLinks(content)
+		content = disableStyles(content)
+
 		wpvm.Entities = append(wpvm.Entities, template.HTML(content))
 
 		imagesContent := ""

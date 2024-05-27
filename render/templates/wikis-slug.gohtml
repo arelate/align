@@ -11,11 +11,14 @@
     <body>
 
     <h1>{{.GuideTitle}}</h1>
+    {{if .Slug}}
+        <h2><a href="/wikis">All Guides</a></h2>
+    {{end}}
 
     <ul>
-    {{range .Items}}
-        <li>{{.}}</li>
-    {{end}}
+        {{range .Items}}
+            <li>{{.}}</li>
+        {{end}}
     </ul>
 
 

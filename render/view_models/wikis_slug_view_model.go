@@ -11,12 +11,14 @@ const MainPage = "Main_Page"
 
 type WikisSlugViewModel struct {
 	GuideTitle string
+	Slug       string
 	Items      []template.HTML
 }
 
 func NewWikiSlugViewModel(slug string, wikiNavigation []ign_integration.WikiNavigation) *WikisSlugViewModel {
 	wsvm := &WikisSlugViewModel{
 		GuideTitle: GuideTitle(wikiNavigation),
+		Slug:       slug,
 		Items:      make([]template.HTML, 0),
 	}
 

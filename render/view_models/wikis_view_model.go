@@ -7,7 +7,7 @@ import (
 
 func NewWikisViewModel(wikis []string) *WikisSlugViewModel {
 	wsvm := &WikisSlugViewModel{
-		GuideTitle: "All guides",
+		GuideTitle: "All Guides",
 	}
 
 	for _, w := range wikis {

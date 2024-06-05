@@ -5,13 +5,13 @@
         <meta charset='UTF-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <meta name='color-scheme' content='dark light'>
-        <title>{{.PageTitle}} - {{.WikiPageName}}</title>
+        <title>{{.PageTitle}} - {{.WikiName}}</title>
         {{template "css-base"}}
     </head>
     <body>
 
     <h1>{{.PageTitle}}</h1>
-    <h2 class="subtle"><a href="/wikis/{{.Slug}}">{{.WikiPageName}}</a></h2>
+    <h2 class="subtle"><a href="/wikis/{{.Slug}}">{{.WikiName}}</a></h2>
 
     <ul class="dates">
         <li>
@@ -34,14 +34,14 @@
         {{if .PrevPageUrl}}
             <button>
                 <a class="previous" href="{{.PrevPageUrl}}">
-                    {{.PrevPageLabel}}
+                    {{.PrevPageTitle}}
                 </a>
             </button>
         {{end}}
         {{if .NextPageUrl}}
             <button>
                 <a class="next" href="{{.NextPageUrl}}">
-                    {{.NextPageLabel}}
+                    {{.NextPageTitle}}
                 </a>
             </button>
         {{end}}

@@ -1,14 +1,135 @@
 package cli
 
-import "net/url"
+import (
+	"encoding/json"
+	"github.com/arelate/align/data"
+	"github.com/arelate/align/paths"
+	"github.com/arelate/align/render/view_models"
+	"github.com/arelate/southern_light/ign_integration"
+	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/nod"
+	"net/url"
+	"path"
+	"strings"
+)
 
 func ReduceHandler(u *url.URL) error {
 	slug := u.Query().Get("slug")
-	force := u.Query().Has("force")
-
-	return Reduce(slug, force)
+	return Reduce(slug)
 }
 
-func Reduce(slug string, force bool) error {
+func Reduce(slug string) error {
+
+	ra := nod.NewProgress("reducing data for %s", slug)
+	defer ra.End()
+
+	reductions := make(map[string]map[string][]string)
+	for _, p := range data.AllReduxProperties() {
+		reductions[p] = make(map[string][]string)
+	}
+
+	rdx, err := paths.NewReduxWriter()
+	if err != nil {
+		return ra.EndWithError(err)
+	}
+
+	dkv, err := paths.DataKeyValues(slug)
+	if err != nil {
+		return ra.EndWithError(err)
+	}
+
+	// wiki
+
+	reductions[data.WikiPages][slug] = dkv.Keys()
+
+	mainPage, err := getWikiPage(view_models.MainPage, dkv)
+	if err != nil {
+		return ra.EndWithError(err)
+	}
+
+	reductions[data.WikiNameProperty][slug] = []string{mainPage.Props.PageProps.Page.Name}
+	reductions[data.WikiPrimaryImageProperty][slug] = []string{mainPage.PrimaryImageUrl()}
+
+	// pages
+
+	pages := dkv.Keys()
+
+	ra.TotalInt(len(pages))
+
+	for _, page := range pages {
+
+		wp, err := getWikiPage(page, dkv)
+		if err != nil {
+			return ra.EndWithError(err)
+		}
+
+		sp := path.Join(slug, page)
+
+		reductions[data.PageTitleProperty][sp] = []string{wp.PageTitle()}
+		reductions[data.PageNextPageUrlProperty][sp] = []string{wp.NextPageUrl()}
+		reductions[data.PagePrevPageUrlProperty][sp] = []string{wp.PreviousPageUrl()}
+		reductions[data.PagePublishDateProperty][sp] = []string{wp.PublishDate().Format("Jan 2, 2006")}
+		reductions[data.PageUpdatedAtProperty][sp] = []string{wp.UpdatedAt().Format("Jan 2, 2006")}
+
+		htmlEntities := make([]string, 0)
+		for _, he := range wp.HTMLEntities() {
+			content := he.Values.Html
+
+			content = rewriteOriginLinks(content)
+			content = rewriteImageLinks(content)
+			content = disableStyles(content)
+
+			if content != "" {
+				htmlEntities = append(htmlEntities, content)
+			}
+
+			imagesContent := make([]string, 0, len(he.ImageValues))
+			for _, iv := range he.ImageValues {
+				imagesContent = append(imagesContent, "<img src='"+rewriteImageLinks(iv.Original)+"' />")
+			}
+
+			htmlEntities = append(htmlEntities, imagesContent...)
+		}
+
+		reductions[data.PageHTMLEntriesProperty][sp] = htmlEntities
+
+		ra.Increment()
+	}
+
+	// navigation
+
+	for property := range reductions {
+		if err := rdx.BatchReplaceValues(property, reductions[property]); err != nil {
+			return ra.EndWithError(err)
+		}
+	}
+
+	ra.EndWithResult("done")
+
 	return nil
+}
+
+func getWikiPage(page string, kv kvas.KeyValues) (*ign_integration.WikiProps, error) {
+	wikiPage, err := kv.Get(page)
+	if err != nil {
+		return nil, err
+	}
+	defer wikiPage.Close()
+
+	var wikiProps ign_integration.WikiProps
+
+	err = json.NewDecoder(wikiPage).Decode(&wikiProps)
+	return &wikiProps, err
+}
+
+func rewriteImageLinks(html string) string {
+	return strings.Replace(html, "https://oyster.ignimgs.com/mediawiki/apis.ign.com", "/image", -1)
+}
+
+func rewriteOriginLinks(html string) string {
+	return strings.Replace(html, "https://www.ign.com", "", -1)
+}
+
+func disableStyles(html string) string {
+	return strings.Replace(html, "style=", "data-style=", -1)
 }

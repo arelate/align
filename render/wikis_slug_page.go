@@ -1,45 +1,19 @@
 package render
 
 import (
-	"encoding/json"
-	"errors"
-	"github.com/arelate/align/paths"
 	"github.com/arelate/align/render/view_models"
-	"github.com/arelate/southern_light/ign_integration"
 	"io"
 )
 
 func WikisSlugPage(slug, page string, w io.Writer) error {
 
 	var err error
-	if _, ok := keyValues[slug]; !ok {
-		keyValues[slug], err = paths.DataKeyValues(slug)
-		if err != nil {
-			return err
-		}
-	}
-
-	kv := keyValues[slug]
-
-	if err := kv.IndexRefresh(); err != nil {
-		return err
-	}
-
-	wp, err := kv.Get(page)
+	rdx, err = rdx.RefreshReader()
 	if err != nil {
 		return err
 	}
-	if wp == nil {
-		return errors.New("page not found: " + page)
-	}
-	defer wp.Close()
 
-	var wikiProps ign_integration.WikiProps
-	if err := json.NewDecoder(wp).Decode(&wikiProps); err != nil {
-		return err
-	}
-
-	wpvm := view_models.NewWikiPageViewModel(slug, &wikiProps)
+	wpvm := view_models.NewWikiPageViewModel(slug, page, rdx)
 
 	if err := tmpl.ExecuteTemplate(w, "wikis-slug-page", wpvm); err != nil {
 		return err

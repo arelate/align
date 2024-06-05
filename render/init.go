@@ -2,6 +2,7 @@ package render
 
 import (
 	"embed"
+	"github.com/arelate/align/paths"
 	"github.com/boggydigital/kvas"
 	"html/template"
 )
@@ -12,16 +13,27 @@ var (
 	templates embed.FS
 
 	keyValues map[string]kvas.KeyValues
+
+	rdx kvas.ReadableRedux
 )
 
 func Init() error {
 
 	keyValues = make(map[string]kvas.KeyValues)
 
-	tmpl = template.Must(
+	var err error
+	rdx, err = paths.NewReduxReader()
+	if err != nil {
+		return err
+	}
+
+	tmpl, err =
 		template.
 			New("").
-			ParseFS(templates, "templates/*.gohtml"))
+			ParseFS(templates, "templates/*.gohtml")
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

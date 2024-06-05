@@ -1,71 +1,68 @@
 package view_models
 
 import (
-	"github.com/arelate/southern_light/ign_integration"
+	"github.com/arelate/align/data"
+	"github.com/boggydigital/kvas"
 	"html/template"
-	"strings"
+	"path"
 )
 
 type WikisSlugPageViewModel struct {
 	Slug          string
-	WikiPageName  string
+	WikiName      string
 	PageTitle     string
 	PublishDate   string
 	UpdatedAt     string
 	Entities      []template.HTML
-	PrevPageLabel string
+	PrevPageTitle string
 	PrevPageUrl   string
-	NextPageLabel string
+	NextPageTitle string
 	NextPageUrl   string
 }
 
-func rewriteImageLinks(html string) string {
-	return strings.Replace(html, "https://oyster.ignimgs.com/mediawiki/apis.ign.com", "/image", -1)
-}
-
-func rewriteOriginLinks(html string) string {
-	return strings.Replace(html, "https://www.ign.com", "", -1)
-}
-
-func disableStyles(html string) string {
-	return strings.Replace(html, "style=", "data-style=", -1)
-}
-
-func NewWikiPageViewModel(slug string, wp *ign_integration.WikiProps) *WikisSlugPageViewModel {
-	page := wp.Props.PageProps.Page
+func NewWikiPageViewModel(slug, page string, rdx kvas.ReadableRedux) *WikisSlugPageViewModel {
 
 	wpvm := &WikisSlugPageViewModel{
-		Slug:         slug,
-		WikiPageName: page.Name,
-		PageTitle:    page.Page.Title,
-		PublishDate:  page.PublishDate.Format("Jan 2, 2006"),
-		UpdatedAt:    page.UpdatedAt.Format("Jan 2, 2006"),
+		Slug: slug,
 	}
 
-	for _, he := range wp.HTMLEntities() {
-		content := he.Values.Html
-
-		content = rewriteOriginLinks(content)
-		content = rewriteImageLinks(content)
-		content = disableStyles(content)
-
-		wpvm.Entities = append(wpvm.Entities, template.HTML(content))
-
-		imagesContent := ""
-		for _, iv := range he.ImageValues {
-			imagesContent += "<img src='" + rewriteImageLinks(iv.Original) + "' />"
-		}
-
-		if imagesContent != "" {
-			wpvm.Entities = append(wpvm.Entities, template.HTML(imagesContent))
-		}
+	if wikiName, ok := rdx.GetFirstVal(data.WikiNameProperty, slug); ok {
+		wpvm.WikiName = wikiName
 	}
 
-	wpvm.NextPageLabel = wp.Props.PageProps.Page.Page.NextPage.Label
-	wpvm.NextPageUrl = wp.NextPageUrl()
+	sp := path.Join(slug, page)
 
-	wpvm.PrevPageLabel = wp.Props.PageProps.Page.Page.PrevPage.Label
-	wpvm.PrevPageUrl = wp.PreviousPageUrl()
+	if pageTitle, ok := rdx.GetFirstVal(data.PageTitleProperty, sp); ok {
+		wpvm.PageTitle = pageTitle
+	}
+	if nextPageUrl, ok := rdx.GetFirstVal(data.PageNextPageUrlProperty, sp); ok {
+		wpvm.NextPageUrl = nextPageUrl
+		if npt, ok := rdx.GetFirstVal(data.PageTitleProperty, path.Join(slug, nextPageUrl)); ok {
+			wpvm.NextPageTitle = npt
+		} else {
+			wpvm.NextPageTitle = nextPageUrl
+		}
+	}
+	if prevPageUrl, ok := rdx.GetFirstVal(data.PagePrevPageUrlProperty, sp); ok {
+		wpvm.PrevPageUrl = prevPageUrl
+		if ppt, ok := rdx.GetFirstVal(data.PageTitleProperty, path.Join(slug, prevPageUrl)); ok {
+			wpvm.PrevPageTitle = ppt
+		} else {
+			wpvm.PrevPageTitle = prevPageUrl
+		}
+	}
+	if publishDate, ok := rdx.GetFirstVal(data.PagePublishDateProperty, sp); ok {
+		wpvm.PublishDate = publishDate
+	}
+	if updatedAt, ok := rdx.GetFirstVal(data.PageUpdatedAtProperty, sp); ok {
+		wpvm.UpdatedAt = updatedAt
+	}
+
+	if htmlEntries, ok := rdx.GetAllValues(data.PageHTMLEntriesProperty, sp); ok {
+		for _, entry := range htmlEntries {
+			wpvm.Entities = append(wpvm.Entities, template.HTML(entry))
+		}
+	}
 
 	return wpvm
 }

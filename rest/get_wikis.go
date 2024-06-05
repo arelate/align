@@ -16,7 +16,6 @@ func GetWikis(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	wikis := nkv.Keys()
 
 	sort.Strings(wikis)

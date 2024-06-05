@@ -31,7 +31,7 @@ func main() {
 
 	if err := pathways.Setup(dirOverridesFilename,
 		paths.DefaultAlignRootDir,
-		nil,
+		paths.RelToAbsDirs,
 		paths.AllAbsDirs...); err != nil {
 		_ = ea.EndWithError(err)
 		os.Exit(1)
@@ -57,6 +57,7 @@ func main() {
 		"get-data":          cli.GetDataHandler,
 		"get-images":        cli.GetImagesHandler,
 		"get-navigation":    cli.GetNavigationHandler,
+		"get-primary-image": cli.GetPrimaryImageHandler,
 		"get-page":          cli.GetPageHandler,
 		"reduce":            cli.ReduceHandler,
 		"regen-all-statics": cli.RegenAllStaticsHandler,

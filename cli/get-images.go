@@ -63,6 +63,7 @@ func GetImages(kv kvas.KeyValues, slug, page string, force bool) error {
 	gia.TotalInt(len(imageUrls))
 
 	dc := dolo.DefaultClient
+
 	sid, err := paths.AbsImagesSlugDir(slug)
 	if err != nil {
 		return gia.EndWithError(err)

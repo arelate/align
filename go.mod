@@ -3,7 +3,7 @@ module github.com/arelate/align
 go 1.22.3
 
 require (
-	github.com/arelate/southern_light v0.1.42
+	github.com/arelate/southern_light v0.1.43
 	github.com/boggydigital/backups v0.1.3
 	github.com/boggydigital/clo v1.0.4
 	github.com/boggydigital/dolo v0.2.15

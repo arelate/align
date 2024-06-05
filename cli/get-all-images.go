@@ -25,6 +25,10 @@ func GetAllImages(slug string, force bool) error {
 		return gaia.EndWithError(err)
 	}
 
+	if err := GetPrimaryImage(kv, slug, force); err != nil {
+		return gaia.EndWithError(err)
+	}
+
 	pages := kv.Keys()
 
 	gaia.TotalInt(len(pages))

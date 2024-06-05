@@ -43,6 +43,10 @@ get-page
     page
     force
 
+get-primary-image
+    slug^*
+    force
+
 get-data
     slug^*
     page

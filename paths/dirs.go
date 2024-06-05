@@ -18,6 +18,10 @@ const (
 	Static     pathways.AbsDir = "statics"
 )
 
+const (
+	PrimaryImages pathways.RelDir = "_primary"
+)
+
 var AllAbsDirs = []pathways.AbsDir{
 	Backups,
 	Data,
@@ -26,6 +30,10 @@ var AllAbsDirs = []pathways.AbsDir{
 	Navigation,
 	Pages,
 	Static,
+}
+
+var RelToAbsDirs = map[pathways.RelDir]pathways.AbsDir{
+	PrimaryImages: Images,
 }
 
 func slugKeyValues(slug string, absDir pathways.AbsDir, ext string) (kvas.KeyValues, error) {

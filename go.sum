@@ -12,6 +12,8 @@ github.com/arelate/southern_light v0.1.41 h1:ZJgqLGHVloQQN1kgaMO2Qx5VVy3TBQxqxoN
 github.com/arelate/southern_light v0.1.41/go.mod h1:IR7j2+TrHdoNfZrTNeXOvL3UYsotcNED3aOAEpm7VCY=
 github.com/arelate/southern_light v0.1.42 h1:Og/lLr+kjmIV8j4YF5q9m8NbljCZ2jTZbQleSKvxxTk=
 github.com/arelate/southern_light v0.1.42/go.mod h1:IR7j2+TrHdoNfZrTNeXOvL3UYsotcNED3aOAEpm7VCY=
+github.com/arelate/southern_light v0.1.43 h1:RTg4hUh7pYvuuRquuTfeM4loft6QKPMgMb9ToqgWKyI=
+github.com/arelate/southern_light v0.1.43/go.mod h1:IR7j2+TrHdoNfZrTNeXOvL3UYsotcNED3aOAEpm7VCY=
 github.com/boggydigital/backups v0.1.3 h1:Yq4/2kVxpexc0bAVA5tQPgdcKXPWsqihzgI759VPgVM=
 github.com/boggydigital/backups v0.1.3/go.mod h1:xIV5pr0U178hTV3mHfStSU+s1IOJUH4fOU81ad4Cq7Y=
 github.com/boggydigital/clo v1.0.4 h1:LKvXktyG+EeemzjnSp0DYIAEbY2/rvFcuHtjjwJk280=

@@ -19,6 +19,7 @@ var (
 func NewWikisViewModel(wikis []string, keyValues map[string]kvas.KeyValues) (*WikisSlugViewModel, error) {
 	wsvm := &WikisSlugViewModel{
 		GuideTitle: "All Guides",
+		Wrapping:   true,
 	}
 
 	for _, w := range wikis {
@@ -37,7 +38,7 @@ func NewWikisViewModel(wikis []string, keyValues map[string]kvas.KeyValues) (*Wi
 			return nil, err
 		}
 
-		u := fmt.Sprintf("<a href='/wikis/%s'><img src='/%s'/><span>%s</span></a>",
+		u := fmt.Sprintf("<a href='/wikis/%s'><img src='/%s' title='%s' /></a>",
 			w,
 			path.Join("primary_image", piu.Path),
 			slugTitles[w])

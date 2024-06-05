@@ -12,6 +12,7 @@ const MainPage = "Main_Page"
 type WikisSlugViewModel struct {
 	GuideTitle string
 	Slug       string
+	Wrapping   bool
 	Items      []template.HTML
 }
 

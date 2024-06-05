@@ -7,6 +7,20 @@
         <meta name='color-scheme' content='dark light'>
         <title>{{.GuideTitle}}</title>
         {{template "css-base"}}
+        <style>
+            ul.wrapping {
+
+                flex-wrap: wrap;
+                flex-direction: row;
+                gap: var(--normal);
+
+                & a img {
+                    width: 245px;
+                    border-radius: var(--border-radius-large);
+                    margin-block: 0;
+                }
+            }
+        </style>
     </head>
     <body>
 
@@ -15,7 +29,7 @@
         <h2><a href="/wikis">All Guides</a></h2>
     {{end}}
 
-    <ul>
+    <ul {{if .Wrapping}}class="wrapping"{{end}}>
         {{range .Items}}
             <li>{{.}}</li>
         {{end}}

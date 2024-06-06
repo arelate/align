@@ -41,8 +41,6 @@ get-data
     force
 
 reduce
-    slug^&
-    all
 
 serve
     port$*

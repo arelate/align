@@ -42,17 +42,26 @@ func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) (*WikisSlugViewMo
 
 	if nav, ok := rdx.GetAllValues(data.NavigationProperty, slug); ok {
 		for _, pageUrl := range nav {
-			wsvm.Items = append(wsvm.Items, template.HTML(WikiNavigationHTML(slug, pageUrl, rdx)))
+			wnh, err := WikiNavigationHTML(slug, pageUrl, rdx)
+			if err != nil {
+				return nil, err
+			}
+			wsvm.Items = append(wsvm.Items, template.HTML(wnh))
 		}
 	}
 
 	return wsvm, nil
 }
 
-func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) string {
+func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) (string, error) {
 
 	if pageUrl == "" {
 		pageUrl = MainPage
+	}
+
+	upu, err := url.PathUnescape(pageUrl)
+	if err != nil {
+		return pageUrl, err
 	}
 
 	pageTitle := ""
@@ -60,7 +69,7 @@ func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) string {
 		pageTitle = pt
 	}
 
-	missingLink := rdx.HasValue(data.PageMissingProperty, slug, pageUrl)
+	missingLink := rdx.HasValue(data.PageMissingProperty, slug, upu)
 
 	link := ""
 	if pageTitle != "" {
@@ -85,7 +94,10 @@ func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) string {
 			link += "<ul>"
 		}
 		for _, sn := range subNav {
-			subLink := WikiNavigationHTML(slug, sn, rdx)
+			subLink, err := WikiNavigationHTML(slug, sn, rdx)
+			if err != nil {
+				return link, err
+			}
 			link += "<li>" + subLink + "</li>"
 		}
 		if len(subNav) > 0 {
@@ -93,5 +105,5 @@ func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) string {
 		}
 	}
 
-	return link
+	return link, nil
 }

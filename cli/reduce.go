@@ -15,26 +15,20 @@ import (
 )
 
 func ReduceHandler(u *url.URL) error {
-	slugs := strings.Split(u.Query().Get("slug"), ",")
-	all := u.Query().Has("all")
-	return Reduce(all, slugs...)
+	return Reduce()
 }
 
-func Reduce(all bool, slugs ...string) error {
+func Reduce() error {
 
 	ra := nod.NewProgress("reducing data...")
 	defer ra.End()
 
-	if all {
-		nkv, err := paths.NavigationKeyValues()
-		if err != nil {
-			return ra.EndWithError(err)
-		}
-
-		slugs = nkv.Keys()
+	nkv, err := paths.NavigationKeyValues()
+	if err != nil {
+		return ra.EndWithError(err)
 	}
 
-	for _, slug := range slugs {
+	for _, slug := range nkv.Keys() {
 		if err := reduceSlug(slug); err != nil {
 			return ra.EndWithError(err)
 		}

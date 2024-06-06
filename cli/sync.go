@@ -38,5 +38,9 @@ func Sync(slug string, force bool) error {
 		return err
 	}
 
+	if err := Backup(); err != nil {
+		return err
+	}
+
 	return nil
 }

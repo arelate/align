@@ -15,14 +15,40 @@ import (
 )
 
 func ReduceHandler(u *url.URL) error {
-	slug := u.Query().Get("slug")
-	return Reduce(slug)
+	slugs := strings.Split(u.Query().Get("slug"), ",")
+	all := u.Query().Has("all")
+	return Reduce(all, slugs...)
 }
 
-func Reduce(slug string) error {
+func Reduce(all bool, slugs ...string) error {
 
-	ra := nod.NewProgress("reducing data for %s", slug)
+	ra := nod.NewProgress("reducing data...")
 	defer ra.End()
+
+	if all {
+		nkv, err := paths.NavigationKeyValues()
+		if err != nil {
+			return ra.EndWithError(err)
+		}
+
+		slugs = nkv.Keys()
+	}
+
+	for _, slug := range slugs {
+		if err := reduceSlug(slug); err != nil {
+			return ra.EndWithError(err)
+		}
+	}
+
+	ra.EndWithResult("done")
+
+	return nil
+}
+
+func reduceSlug(slug string) error {
+
+	rsa := nod.NewProgress(" %s", slug)
+	defer rsa.End()
 
 	reductions := make(map[string]map[string][]string)
 	for _, p := range data.AllReduxProperties() {
@@ -31,12 +57,12 @@ func Reduce(slug string) error {
 
 	rdx, err := paths.NewReduxWriter()
 	if err != nil {
-		return ra.EndWithError(err)
+		return rsa.EndWithError(err)
 	}
 
 	dkv, err := paths.DataKeyValues(slug)
 	if err != nil {
-		return ra.EndWithError(err)
+		return rsa.EndWithError(err)
 	}
 
 	// wiki
@@ -45,7 +71,7 @@ func Reduce(slug string) error {
 
 	mainPage, err := getWikiPage(view_models.MainPage, dkv)
 	if err != nil {
-		return ra.EndWithError(err)
+		return rsa.EndWithError(err)
 	}
 
 	reductions[data.WikiNameProperty][slug] = []string{mainPage.Props.PageProps.Page.Name}
@@ -55,13 +81,13 @@ func Reduce(slug string) error {
 
 	pages := dkv.Keys()
 
-	ra.TotalInt(len(pages))
+	rsa.TotalInt(len(pages))
 
 	for _, page := range pages {
 
 		wp, err := getWikiPage(page, dkv)
 		if err != nil {
-			return ra.EndWithError(err)
+			return rsa.EndWithError(err)
 		}
 
 		sp := path.Join(slug, page)
@@ -94,14 +120,14 @@ func Reduce(slug string) error {
 
 		reductions[data.PageHTMLEntriesProperty][sp] = htmlEntities
 
-		ra.Increment()
+		rsa.Increment()
 	}
 
 	// navigation
 
 	wikiNavigation, err := nav.WikiNavigation(slug)
 	if err != nil {
-		return ra.EndWithError(err)
+		return rsa.EndWithError(err)
 	}
 
 	nav := make([]string, 0, len(wikiNavigation))
@@ -120,11 +146,11 @@ func Reduce(slug string) error {
 
 	for property := range reductions {
 		if err := rdx.BatchReplaceValues(property, reductions[property]); err != nil {
-			return ra.EndWithError(err)
+			return rsa.EndWithError(err)
 		}
 	}
 
-	ra.EndWithResult("done")
+	rsa.EndWithResult("done")
 
 	return nil
 }

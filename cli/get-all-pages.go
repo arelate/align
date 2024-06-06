@@ -3,8 +3,8 @@ package cli
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/arelate/align/nav"
 	"github.com/arelate/align/paths"
-	"github.com/arelate/align/render"
 	"github.com/arelate/align/render/view_models"
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/kvas"
@@ -51,12 +51,12 @@ func GetAllPages(slug string, throttle int64, force bool) error {
 		return gapa.EndWithError(err)
 	}
 
-	wn, err := render.WikiNavigation(slug)
+	wn, err := nav.WikiNavigation(slug)
 	if err != nil {
 		return gapa.EndWithError(err)
 	}
 
-	wnPages := render.AllLinks(wn)
+	wnPages := nav.AllLinks(wn)
 
 	pages := map[string]bool{view_models.MainPage: false}
 

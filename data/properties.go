@@ -14,9 +14,9 @@ const (
 	PageNextPageUrlProperty = "page-next-page-url"
 	PagePrevPageUrlProperty = "page-prev-page-url"
 
-	NavigationLabelProperty  = "navigation-label"
-	NavigationUrlProperty    = "navigation-url"
-	NavigationSubNavProperty = "navigation-subnav"
+	NavigationProperty      = "navigation"
+	NavigationTitleProperty = "navigation-title"
+	SubNavProperty          = "sub-nav"
 )
 
 func AllReduxProperties() []string {
@@ -30,8 +30,8 @@ func AllReduxProperties() []string {
 		PageHTMLEntriesProperty,
 		PageNextPageUrlProperty,
 		PagePrevPageUrlProperty,
-		NavigationLabelProperty,
-		NavigationUrlProperty,
-		NavigationSubNavProperty,
+		NavigationProperty,
+		NavigationTitleProperty,
+		SubNavProperty,
 	}
 }

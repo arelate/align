@@ -7,12 +7,13 @@ import (
 
 func WikisPage(slug string, w io.Writer) error {
 
-	wn, err := WikiNavigation(slug)
+	var err error
+	rdx, err = rdx.RefreshReader()
 	if err != nil {
 		return err
 	}
 
-	wsvm := view_models.NewWikiSlugViewModel(slug, wn)
+	wsvm := view_models.NewWikiSlugViewModel(slug, rdx)
 
 	if err := tmpl.ExecuteTemplate(w, "wikis-slug", wsvm); err != nil {
 		return err

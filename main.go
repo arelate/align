@@ -49,9 +49,6 @@ func main() {
 
 	clo.HandleFuncs(map[string]clo.Handler{
 		"backup":            cli.BackupHandler,
-		"gen-all-statics":   cli.GenAllStaticsHandler,
-		"gen-static-page":   cli.GenStaticPageHandler,
-		"gen-toc":           cli.GenTOCHandler,
 		"get-all-images":    cli.GetAllImagesHandler,
 		"get-all-pages":     cli.GetAllPagesHandler,
 		"get-data":          cli.GetDataHandler,
@@ -60,7 +57,6 @@ func main() {
 		"get-primary-image": cli.GetPrimaryImageHandler,
 		"get-page":          cli.GetPageHandler,
 		"reduce":            cli.ReduceHandler,
-		"regen-all-statics": cli.RegenAllStaticsHandler,
 		"serve":             cli.ServeHandler,
 		"sync":              cli.SyncHandler,
 		"version":           cli.VersionHandler,

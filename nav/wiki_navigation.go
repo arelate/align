@@ -1,10 +1,9 @@
-package render
+package nav
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/arelate/align/paths"
-	"github.com/arelate/align/render/view_models"
 	"github.com/arelate/southern_light/ign_integration"
 )
 
@@ -33,20 +32,4 @@ func WikiNavigation(slug string) ([]ign_integration.WikiNavigation, error) {
 	}
 
 	return wikiNavigation, nil
-}
-
-func AllLinks(wikiNavigation []ign_integration.WikiNavigation) []string {
-	if len(wikiNavigation) == 0 {
-		return nil
-	}
-	links := make([]string, 0, len(wikiNavigation))
-	for _, wiki := range wikiNavigation {
-		link := wiki.Url
-		if link == "" {
-			link = view_models.MainPage
-		}
-		links = append(links, link)
-		links = append(links, AllLinks(wiki.SubNav)...)
-	}
-	return links
 }

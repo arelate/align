@@ -18,8 +18,8 @@ var (
 
 func NewWikisViewModel(wikis []string, keyValues map[string]kvas.KeyValues) (*WikisSlugViewModel, error) {
 	wsvm := &WikisSlugViewModel{
-		GuideTitle: "All Guides",
-		Wrapping:   true,
+		Title:    "All Guides",
+		Wrapping: true,
 	}
 
 	for _, w := range wikis {

@@ -8,18 +8,6 @@
 
 backup
 
-gen-all-statics
-    slug^*
-
-gen-static-page
-    slug^*
-    page
-    force
-
-gen-toc
-    slug^*
-    force
-
 get-all-images
     slug^*
     force
@@ -54,8 +42,6 @@ get-data
 
 reduce
     slug^*
-
-regen-all-statics
 
 serve
     port$*

@@ -30,7 +30,3 @@ func NavigationKeyValues() (kvas.KeyValues, error) {
 	}
 	return kvas.NewKeyValues(nd, kvas.JsonExt)
 }
-
-func StaticsKeyValues(slug string) (kvas.KeyValues, error) {
-	return slugKeyValues(slug, Static, kvas.HtmlExt)
-}

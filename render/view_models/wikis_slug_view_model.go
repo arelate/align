@@ -2,57 +2,65 @@ package view_models
 
 import (
 	"fmt"
-	"github.com/arelate/southern_light/ign_integration"
+	"github.com/arelate/align/data"
+	"github.com/boggydigital/kvas"
 	"html/template"
-	"net/url"
+	"path"
 )
 
 const MainPage = "Main_Page"
 
 type WikisSlugViewModel struct {
-	GuideTitle string
-	Slug       string
-	Wrapping   bool
-	Items      []template.HTML
+	Title    string
+	Slug     string
+	Wrapping bool
+	Items    []template.HTML
 }
 
-func NewWikiSlugViewModel(slug string, wikiNavigation []ign_integration.WikiNavigation) *WikisSlugViewModel {
+func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) *WikisSlugViewModel {
+
 	wsvm := &WikisSlugViewModel{
-		GuideTitle: GuideTitle(wikiNavigation),
-		Slug:       slug,
-		Items:      make([]template.HTML, 0),
+		Slug:  slug,
+		Items: make([]template.HTML, 0),
 	}
 
-	for _, wn := range wikiNavigation {
-		wsvm.Items = append(wsvm.Items, template.HTML(WikiNavigationHTML(slug, wn)))
+	if navTitle, ok := rdx.GetFirstVal(data.NavigationTitleProperty, slug); ok {
+		wsvm.Title = navTitle
+	}
+
+	if nav, ok := rdx.GetAllValues(data.NavigationProperty, slug); ok {
+		for _, pageUrl := range nav {
+			wsvm.Items = append(wsvm.Items, template.HTML(WikiNavigationHTML(slug, pageUrl, rdx)))
+		}
 	}
 
 	return wsvm
 }
 
-func GuideTitle(wn []ign_integration.WikiNavigation) string {
-	for _, w := range wn {
-		return w.Label
-	}
-	return ""
-}
+func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) string {
 
-func WikiNavigationHTML(slug string, wn ign_integration.WikiNavigation) string {
-
-	u := url.PathEscape(wn.Url)
-	if u == "" {
-		u = MainPage
+	if pageUrl == "" {
+		pageUrl = MainPage
 	}
 
-	link := fmt.Sprintf("<a href='/wikis/%s/%s'>%s</a>", slug, u, wn.Label)
-	if len(wn.SubNav) > 0 {
-		link += "<ul>"
+	pageTitle := ""
+	if pt, ok := rdx.GetFirstVal(data.PageTitleProperty, path.Join(slug, pageUrl)); ok {
+		pageTitle = pt
 	}
-	for _, sn := range wn.SubNav {
-		link += "<li>" + WikiNavigationHTML(slug, sn) + "</li>"
+
+	link := fmt.Sprintf("<a href='/wikis/%s/%s'>%s</a>", slug, pageUrl, pageTitle)
+
+	if subNav, ok := rdx.GetAllValues(data.SubNavProperty, path.Join(slug, pageUrl)); ok {
+		if len(subNav) > 0 {
+			link += "<ul>"
+		}
+		for _, sn := range subNav {
+			link += "<li>" + WikiNavigationHTML(slug, sn, rdx) + "</li>"
+		}
+		if len(subNav) > 0 {
+			link += "</ul>"
+		}
 	}
-	if len(wn.SubNav) > 0 {
-		link += "</ul>"
-	}
+
 	return link
 }

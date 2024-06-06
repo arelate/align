@@ -10,5 +10,3 @@ navigation
     /use/share/align/navigation
 pages
     /usr/share/align/pages
-statics
-    /usr/share/align/statics

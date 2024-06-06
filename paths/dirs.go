@@ -14,7 +14,6 @@ const (
 	Metadata   pathways.AbsDir = "metadata"
 	Navigation pathways.AbsDir = "navigation"
 	Pages      pathways.AbsDir = "pages"
-	Static     pathways.AbsDir = "statics"
 )
 
 const (
@@ -28,7 +27,6 @@ var AllAbsDirs = []pathways.AbsDir{
 	Metadata,
 	Navigation,
 	Pages,
-	Static,
 }
 
 var RelToAbsDirs = map[pathways.RelDir]pathways.AbsDir{

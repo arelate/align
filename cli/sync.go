@@ -34,15 +34,7 @@ func Sync(slug string, force bool) error {
 		return err
 	}
 
-	if err := GenTOC(slug, force); err != nil {
-		return err
-	}
-
 	if err := Reduce(slug); err != nil {
-		return err
-	}
-
-	if err := GenAllStatics(slug); err != nil {
 		return err
 	}
 

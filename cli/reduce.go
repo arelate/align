@@ -145,6 +145,10 @@ func reduceSlug(slug string) error {
 	reductions[data.NavigationProperty][slug] = wikiNav
 
 	for _, link := range nav.AllLinks(wikiNavigation) {
+		link, err = url.PathUnescape(link)
+		if err != nil {
+			return rsa.EndWithError(err)
+		}
 		if !dkv.Has(link) {
 			reductions[data.PageMissingProperty][slug] = append(reductions[data.PageMissingProperty][slug], link)
 		}

@@ -12,11 +12,10 @@ import (
 const MainPage = "Main_Page"
 
 type WikisSlugViewModel struct {
-	Title           string
-	Slug            string
-	PrimaryImageUrl string
-	Wrapping        bool
-	Items           []template.HTML
+	Title    string
+	Slug     string
+	Wrapping bool
+	Items    []template.HTML
 }
 
 func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) (*WikisSlugViewModel, error) {
@@ -28,16 +27,6 @@ func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) (*WikisSlugViewMo
 
 	if navTitle, ok := rdx.GetFirstVal(data.NavigationTitleProperty, slug); ok {
 		wsvm.Title = navTitle
-	}
-
-	if primaryImageUrl, ok := rdx.GetFirstVal(data.WikiPrimaryImageProperty, slug); ok {
-
-		piu, err := url.Parse(primaryImageUrl)
-		if err != nil {
-			return nil, err
-		}
-
-		wsvm.PrimaryImageUrl = path.Join("/primary_image", piu.Path)
 	}
 
 	if nav, ok := rdx.GetAllValues(data.NavigationProperty, slug); ok {

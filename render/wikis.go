@@ -1,24 +1,32 @@
 package render
 
 import (
-	"github.com/arelate/align/paths"
+	"github.com/arelate/align/data"
 	"github.com/arelate/align/render/view_models"
 	"io"
+	"sort"
 )
 
-func Wikis(wikis []string, w io.Writer) error {
+func Wikis(w io.Writer) error {
 
-	for _, slug := range wikis {
-		var err error
-		if _, ok := keyValues[slug]; !ok {
-			keyValues[slug], err = paths.DataKeyValues(slug)
-			if err != nil {
-				return err
-			}
+	var err error
+	rdx, err = rdx.RefreshReader()
+	if err != nil {
+		return err
+	}
+
+	wikiPrimaryImages := make(map[string]string)
+
+	slugs := rdx.Keys(data.WikiPrimaryImageProperty)
+	sort.Strings(slugs)
+
+	for _, slug := range slugs {
+		if primaryImage, ok := rdx.GetFirstVal(data.WikiPrimaryImageProperty, slug); ok {
+			wikiPrimaryImages[slug] = primaryImage
 		}
 	}
 
-	wvm, err := view_models.NewWikisViewModel(wikis, keyValues)
+	wvm, err := view_models.NewWikisViewModel(wikiPrimaryImages)
 	if err != nil {
 		return err
 	}

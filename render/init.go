@@ -12,14 +12,10 @@ var (
 	//go:embed "templates/*.gohtml"
 	templates embed.FS
 
-	keyValues map[string]kvas.KeyValues
-
 	rdx kvas.ReadableRedux
 )
 
 func Init() error {
-
-	keyValues = make(map[string]kvas.KeyValues)
 
 	var err error
 	rdx, err = paths.NewReduxReader()

@@ -60,16 +60,24 @@ func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) string {
 		pageTitle = pt
 	}
 
+	missingLink := rdx.HasValue(data.PageMissingProperty, slug, pageUrl)
+
 	link := ""
 	if pageTitle != "" {
-		link = fmt.Sprintf("<a href='/wikis/%s/%s'>%s</a>", slug, pageUrl, pageTitle)
+		attr := ""
+		if !missingLink {
+			attr = fmt.Sprintf("href='/wikis/%s/%s'", slug, pageUrl)
+		} else {
+			attr = "class='subtle'"
+		}
+
+		link = fmt.Sprintf("<a %s>%s</a>", attr, pageTitle)
 	} else {
 		pageUrlTitle := pageUrl
 		if pu, err := url.PathUnescape(pageUrl); err == nil {
 			pageUrlTitle = pu
 		}
 		link = fmt.Sprintf("<span class='subtle'>%s</span>", pageUrlTitle)
-
 	}
 
 	if subNav, ok := rdx.GetAllValues(data.SubNavProperty, path.Join(slug, pageUrl)); ok {

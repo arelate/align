@@ -130,7 +130,7 @@ func reduceSlug(slug string) error {
 		return rsa.EndWithError(err)
 	}
 
-	nav := make([]string, 0, len(wikiNavigation))
+	wikiNav := make([]string, 0, len(wikiNavigation))
 	navTitle := ""
 
 	for _, wn := range wikiNavigation {
@@ -138,11 +138,17 @@ func reduceSlug(slug string) error {
 			navTitle = wn.Label
 		}
 		setNavigationSubNav(slug, &wn, reductions)
-		nav = append(nav, wn.Url)
+		wikiNav = append(wikiNav, wn.Url)
 	}
 
 	reductions[data.NavigationTitleProperty][slug] = []string{navTitle}
-	reductions[data.NavigationProperty][slug] = nav
+	reductions[data.NavigationProperty][slug] = wikiNav
+
+	for _, link := range nav.AllLinks(wikiNavigation) {
+		if !dkv.Has(link) {
+			reductions[data.PageMissingProperty][slug] = append(reductions[data.PageMissingProperty][slug], link)
+		}
+	}
 
 	for property := range reductions {
 		if err := rdx.BatchReplaceValues(property, reductions[property]); err != nil {

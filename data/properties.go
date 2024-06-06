@@ -13,6 +13,7 @@ const (
 	PageHTMLEntriesProperty = "page-html-entries"
 	PageNextPageUrlProperty = "page-next-page-url"
 	PagePrevPageUrlProperty = "page-prev-page-url"
+	PageMissingProperty     = "page-missing"
 
 	NavigationProperty      = "navigation"
 	NavigationTitleProperty = "navigation-title"
@@ -30,6 +31,7 @@ func AllReduxProperties() []string {
 		PageHTMLEntriesProperty,
 		PageNextPageUrlProperty,
 		PagePrevPageUrlProperty,
+		PageMissingProperty,
 		NavigationProperty,
 		NavigationTitleProperty,
 		SubNavProperty,

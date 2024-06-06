@@ -48,14 +48,20 @@ func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) string {
 		pageTitle = pt
 	}
 
-	link := fmt.Sprintf("<a href='/wikis/%s/%s'>%s</a>", slug, pageUrl, pageTitle)
+	link := ""
+	if pageTitle != "" {
+		link = fmt.Sprintf("<a href='/wikis/%s/%s'>%s</a>", slug, pageUrl, pageTitle)
+	} else {
+		link = fmt.Sprintf("<span class='subtle'>%s</span>", pageUrl)
+	}
 
 	if subNav, ok := rdx.GetAllValues(data.SubNavProperty, path.Join(slug, pageUrl)); ok {
 		if len(subNav) > 0 {
 			link += "<ul>"
 		}
 		for _, sn := range subNav {
-			link += "<li>" + WikiNavigationHTML(slug, sn, rdx) + "</li>"
+			subLink := WikiNavigationHTML(slug, sn, rdx)
+			link += "<li>" + subLink + "</li>"
 		}
 		if len(subNav) > 0 {
 			link += "</ul>"

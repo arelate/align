@@ -26,7 +26,7 @@ func Wikis(w io.Writer) error {
 		}
 	}
 
-	wvm, err := view_models.NewWikisViewModel(wikiPrimaryImages)
+	wvm, err := view_models.NewWikisViewModel(slugs, wikiPrimaryImages)
 	if err != nil {
 		return err
 	}

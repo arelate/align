@@ -7,13 +7,13 @@ import (
 	"path"
 )
 
-func NewWikisViewModel(wikiPrimaryImages map[string]string) (*WikisSlugViewModel, error) {
+func NewWikisViewModel(order []string, wikiPrimaryImages map[string]string) (*WikisSlugViewModel, error) {
 	wsvm := &WikisSlugViewModel{
 		Title:    "All Guides",
 		Wrapping: true,
 	}
 
-	for slug := range wikiPrimaryImages {
+	for _, slug := range order {
 
 		piu, err := url.Parse(wikiPrimaryImages[slug])
 		if err != nil {

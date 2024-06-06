@@ -37,7 +37,7 @@ func NewWikiPageViewModel(slug, page string, rdx kvas.ReadableRedux) *WikisSlugP
 	}
 	if nextPageUrl, ok := rdx.GetFirstVal(data.PageNextPageUrlProperty, sp); ok {
 		wpvm.NextPageUrl = nextPageUrl
-		if npt, ok := rdx.GetFirstVal(data.PageTitleProperty, path.Join(slug, nextPageUrl)); ok {
+		if npt, ok := rdx.GetFirstVal(data.PageTitleProperty, path.Join(slug, nextPageUrl)); ok && npt != "" {
 			wpvm.NextPageTitle = npt
 		} else {
 			wpvm.NextPageTitle = nextPageUrl
@@ -45,7 +45,7 @@ func NewWikiPageViewModel(slug, page string, rdx kvas.ReadableRedux) *WikisSlugP
 	}
 	if prevPageUrl, ok := rdx.GetFirstVal(data.PagePrevPageUrlProperty, sp); ok {
 		wpvm.PrevPageUrl = prevPageUrl
-		if ppt, ok := rdx.GetFirstVal(data.PageTitleProperty, path.Join(slug, prevPageUrl)); ok {
+		if ppt, ok := rdx.GetFirstVal(data.PageTitleProperty, path.Join(slug, prevPageUrl)); ok && ppt != "" {
 			wpvm.PrevPageTitle = ppt
 		} else {
 			wpvm.PrevPageTitle = prevPageUrl

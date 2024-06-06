@@ -182,6 +182,12 @@ func disableStyles(html string) string {
 
 func setNavigationSubNav(slug string, wn *ign_integration.WikiNavigation, reductions map[string]map[string][]string) {
 
+	su := path.Join(slug, wn.Url)
+
+	if len(reductions[data.PageTitleProperty][su]) == 0 {
+		reductions[data.PageTitleProperty][su] = []string{wn.Label}
+	}
+
 	if len(wn.SubNav) == 0 {
 		return
 	}
@@ -196,6 +202,6 @@ func setNavigationSubNav(slug string, wn *ign_integration.WikiNavigation, reduct
 		setNavigationSubNav(slug, &sn, reductions)
 	}
 
-	su := path.Join(slug, wn.Url)
 	reductions[data.SubNavProperty][su] = subnav
+
 }

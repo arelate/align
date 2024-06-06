@@ -5,19 +5,21 @@ import (
 	"github.com/arelate/align/data"
 	"github.com/boggydigital/kvas"
 	"html/template"
+	"net/url"
 	"path"
 )
 
 const MainPage = "Main_Page"
 
 type WikisSlugViewModel struct {
-	Title    string
-	Slug     string
-	Wrapping bool
-	Items    []template.HTML
+	Title           string
+	Slug            string
+	PrimaryImageUrl string
+	Wrapping        bool
+	Items           []template.HTML
 }
 
-func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) *WikisSlugViewModel {
+func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) (*WikisSlugViewModel, error) {
 
 	wsvm := &WikisSlugViewModel{
 		Slug:  slug,
@@ -28,13 +30,23 @@ func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) *WikisSlugViewMod
 		wsvm.Title = navTitle
 	}
 
+	if primaryImageUrl, ok := rdx.GetFirstVal(data.WikiPrimaryImageProperty, slug); ok {
+
+		piu, err := url.Parse(primaryImageUrl)
+		if err != nil {
+			return nil, err
+		}
+
+		wsvm.PrimaryImageUrl = path.Join("/primary_image", piu.Path)
+	}
+
 	if nav, ok := rdx.GetAllValues(data.NavigationProperty, slug); ok {
 		for _, pageUrl := range nav {
 			wsvm.Items = append(wsvm.Items, template.HTML(WikiNavigationHTML(slug, pageUrl, rdx)))
 		}
 	}
 
-	return wsvm
+	return wsvm, nil
 }
 
 func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) string {

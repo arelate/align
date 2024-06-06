@@ -26,6 +26,10 @@
                 color: var(--subtle-color);
                 font-weight: var(--fw-bolder);
             }
+
+            img.primary {
+                width: 400px;
+            }
         </style>
     </head>
     <body>
@@ -33,6 +37,10 @@
     <h1>{{.Title}}</h1>
     {{if .Slug}}
         <h2><a href="/wikis">All Guides</a></h2>
+    {{end}}
+
+    {{if .PrimaryImageUrl}}
+        <img class='primary' src='{{.PrimaryImageUrl}}' />
     {{end}}
 
     <ul {{if .Wrapping}}class="wrapping"{{end}}>

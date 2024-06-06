@@ -13,7 +13,10 @@ func WikisPage(slug string, w io.Writer) error {
 		return err
 	}
 
-	wsvm := view_models.NewWikiSlugViewModel(slug, rdx)
+	wsvm, err := view_models.NewWikiSlugViewModel(slug, rdx)
+	if err != nil {
+		return err
+	}
 
 	if err := tmpl.ExecuteTemplate(w, "wikis-slug", wsvm); err != nil {
 		return err

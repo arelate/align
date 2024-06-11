@@ -18,6 +18,9 @@ func GetPrimaryImage(w http.ResponseWriter, r *http.Request) {
 	dd := r.PathValue("dd")
 	image := r.PathValue("image")
 
+	// make sure we're working with the filename and not a path
+	image = path.Base(image)
+
 	spid, err := pathways.GetAbsRelDir(paths.PrimaryImages)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -15,18 +15,18 @@ func Wikis(w io.Writer) error {
 		return err
 	}
 
-	wikiPrimaryImages := make(map[string]string)
+	titles := make(map[string]string)
 
-	slugs := rdx.Keys(data.WikiPrimaryImageProperty)
+	slugs := rdx.Keys(data.NavigationTitleProperty)
 	sort.Strings(slugs)
 
 	for _, slug := range slugs {
-		if primaryImage, ok := rdx.GetFirstVal(data.WikiPrimaryImageProperty, slug); ok {
-			wikiPrimaryImages[slug] = primaryImage
+		if title, ok := rdx.GetFirstVal(data.NavigationTitleProperty, slug); ok {
+			titles[slug] = title
 		}
 	}
 
-	wvm, err := view_models.NewWikisViewModel(slugs, wikiPrimaryImages)
+	wvm, err := view_models.NewWikisViewModel(slugs, titles)
 	if err != nil {
 		return err
 	}

@@ -20,6 +20,7 @@ func HandleFuncs() {
 
 		"GET /image/{slug}/{a}/{bc}/{filename}":       Log(http.HandlerFunc(GetImage)),
 		"GET /primary_image/{yyyy}/{mm}/{dd}/{image}": Log(http.HandlerFunc(GetPrimaryImage)),
+		"GET /manual/{slug}/{filename}":               Log(http.HandlerFunc(GetManual)),
 
 		"GET /": Log(http.RedirectHandler("/wikis", http.StatusPermanentRedirect)),
 	}

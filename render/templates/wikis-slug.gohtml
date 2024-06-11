@@ -7,38 +7,41 @@
         <meta name='color-scheme' content='dark light'>
         <title>{{.Title}}</title>
         {{template "css-base"}}
-        <style>
-            ul.wrapping {
-
-                flex-wrap: wrap;
-                flex-direction: row;
-                gap: var(--normal);
-                justify-content: center;
-
-                & a img {
-                    width: 245px;
-                    border-radius: var(--border-radius-large);
-                    margin-block: 0;
-                }
-            }
-
-            a.subtle {
-                color: var(--subtle-color);
-            }
-        </style>
     </head>
     <body>
 
+    {{template "icons"}}
+
+    {{$slug := .Slug}}
+
     <h1>{{.Title}}</h1>
-    {{if .Slug}}
+    {{if $slug}}
         <h2><a href="/wikis">All Guides</a></h2>
     {{end}}
 
-    <ul {{if .Wrapping}}class="wrapping"{{end}}>
-        {{range .Items}}
-            <li>{{.}}</li>
-        {{end}}
-    </ul>
+    {{if .Items}}
+        <details open>
+            <summary>{{template "plus_icon"}}Guide</summary>
+            <ul>
+                {{range .Items}}
+                    <li>{{.}}</li>
+                {{end}}
+            </ul>
+        </details>
+
+    {{end}}
+
+
+    {{if .Manuals}}
+        <details open>
+            <summary>{{template "plus_icon"}}Manuals</summary>
+            <ul>
+                {{range .Manuals}}
+                    <li><a href="/manual/{{$slug}}/{{.}}">{{.}}</a></li>
+                {{end}}
+            </ul>
+        </details>
+    {{end}}
 
 
     </body>

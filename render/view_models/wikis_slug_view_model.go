@@ -12,10 +12,10 @@ import (
 const MainPage = "Main_Page"
 
 type WikisSlugViewModel struct {
-	Title    string
-	Slug     string
-	Wrapping bool
-	Items    []template.HTML
+	Title   string
+	Slug    string
+	Items   []template.HTML
+	Manuals []string
 }
 
 func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) (*WikisSlugViewModel, error) {
@@ -37,6 +37,10 @@ func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) (*WikisSlugViewMo
 			}
 			wsvm.Items = append(wsvm.Items, template.HTML(wnh))
 		}
+	}
+
+	if manuals, ok := rdx.GetAllValues(data.ManualsProperty, slug); ok {
+		wsvm.Manuals = manuals
 	}
 
 	return wsvm, nil

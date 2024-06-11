@@ -7,12 +7,13 @@ import (
 
 func SyncHandler(u *url.URL) error {
 	slug := u.Query().Get("slug")
+	title := u.Query().Get("title")
 	force := u.Query().Has("force")
 
-	return Sync(slug, force)
+	return Sync(slug, title, force)
 }
 
-func Sync(slug string, force bool) error {
+func Sync(slug, title string, force bool) error {
 
 	if err := GetPage(slug, view_models.MainPage, force); err != nil {
 		return err
@@ -38,7 +39,7 @@ func Sync(slug string, force bool) error {
 		return err
 	}
 
-	if err := Scan(false, slug); err != nil {
+	if err := Scan(slug, title); err != nil {
 		return err
 	}
 

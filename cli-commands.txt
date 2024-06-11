@@ -46,7 +46,7 @@ reduce
 
 scan
     slug^*
-    all
+    title
 
 serve
     port$*
@@ -54,6 +54,7 @@ serve
 
 sync
     slug^*
+    title
     force
 
 version

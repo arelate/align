@@ -11,6 +11,7 @@ const (
 	Backups    pathways.AbsDir = "backups"
 	Data       pathways.AbsDir = "data"
 	Images     pathways.AbsDir = "images"
+	Manuals    pathways.AbsDir = "manuals"
 	Metadata   pathways.AbsDir = "metadata"
 	Navigation pathways.AbsDir = "navigation"
 	Pages      pathways.AbsDir = "pages"
@@ -24,6 +25,7 @@ var AllAbsDirs = []pathways.AbsDir{
 	Backups,
 	Data,
 	Images,
+	Manuals,
 	Metadata,
 	Navigation,
 	Pages,

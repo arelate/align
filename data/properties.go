@@ -18,6 +18,8 @@ const (
 	NavigationProperty      = "navigation"
 	NavigationTitleProperty = "navigation-title"
 	SubNavProperty          = "sub-nav"
+
+	ManualsProperty = "manuals"
 )
 
 func AllReduxProperties() []string {
@@ -35,5 +37,6 @@ func AllReduxProperties() []string {
 		NavigationProperty,
 		NavigationTitleProperty,
 		SubNavProperty,
+		ManualsProperty,
 	}
 }

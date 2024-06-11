@@ -1,37 +1,37 @@
 package rest
 
 import (
-	"github.com/arelate/align/paths"
+	"github.com/arelate/align/data"
+	"github.com/boggydigital/pathways"
 	"net/http"
 	"os"
 	"path"
 	"path/filepath"
 )
 
-func GetImage(w http.ResponseWriter, r *http.Request) {
+func GetManual(w http.ResponseWriter, r *http.Request) {
 
-	// GET /image/{slug}/{a}/{bc}/{filename}
+	// GET /manual/{slug}/{filename}
 
 	slug := r.PathValue("slug")
-	a := r.PathValue("a")
-	bc := r.PathValue("bc")
 	filename := r.PathValue("filename")
 
 	// make sure we're working with the filename and not a path
 	filename = path.Base(filename)
 
-	sid, err := paths.AbsImagesSlugDir(slug)
+	md, err := pathways.GetAbsDir(data.ManualsProperty)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	absImageFilename := filepath.Join(sid, a, bc, filename)
-	if _, err := os.Stat(absImageFilename); err == nil {
-		http.ServeFile(w, r, absImageFilename)
+	absManualFilename := filepath.Join(md, slug, filename)
+	if _, err := os.Stat(absManualFilename); err == nil {
+		http.ServeFile(w, r, absManualFilename)
 	} else if os.IsNotExist(err) {
-		http.Error(w, absImageFilename, http.StatusNotFound)
+		http.Error(w, absManualFilename, http.StatusNotFound)
 	} else {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+
 }

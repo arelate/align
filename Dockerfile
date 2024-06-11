@@ -23,6 +23,8 @@ VOLUME /usr/share/align/backups
 VOLUME /usr/share/align/data
 # images
 VOLUME /usr/share/align/images
+# manuals
+VOLUME /usr/share/align/manuals
 # metadata
 VOLUME /usr/share/align/metadata
 # navigation

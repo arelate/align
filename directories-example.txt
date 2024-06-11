@@ -4,6 +4,8 @@ data
     /usr/share/align/data
 images
     /usr/share/align/images
+manuals
+    /use/share/align/manuals
 metadata
     /usr/share/align/metadata
 navigation

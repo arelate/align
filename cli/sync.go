@@ -34,7 +34,7 @@ func Sync(slug string, force bool) error {
 		return err
 	}
 
-	if err := Reduce(); err != nil {
+	if err := Reduce(slug); err != nil {
 		return err
 	}
 

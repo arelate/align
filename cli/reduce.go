@@ -15,23 +15,31 @@ import (
 )
 
 func ReduceHandler(u *url.URL) error {
-	return Reduce()
+	slugs := strings.Split(u.Query().Get("slug"), ",")
+	all := u.Query().Has("all")
+	return Reduce(all, slugs...)
 }
 
-func Reduce() error {
+func Reduce(all bool, slugs ...string) error {
 
 	ra := nod.NewProgress("reducing data...")
 	defer ra.End()
 
-	nkv, err := paths.NavigationKeyValues()
-	if err != nil {
-		return ra.EndWithError(err)
+	if all {
+		nkv, err := paths.NavigationKeyValues()
+		if err != nil {
+			return ra.EndWithError(err)
+		}
+		slugs = nkv.Keys()
 	}
 
-	for _, slug := range nkv.Keys() {
+	ra.TotalInt(len(slugs))
+
+	for _, slug := range slugs {
 		if err := reduceSlug(slug); err != nil {
 			return ra.EndWithError(err)
 		}
+		ra.Increment()
 	}
 
 	ra.EndWithResult("done")

@@ -57,6 +57,7 @@ func main() {
 		"get-primary-image": cli.GetPrimaryImageHandler,
 		"get-page":          cli.GetPageHandler,
 		"reduce":            cli.ReduceHandler,
+		"scan":              cli.ScanHandler,
 		"serve":             cli.ServeHandler,
 		"sync":              cli.SyncHandler,
 		"version":           cli.VersionHandler,

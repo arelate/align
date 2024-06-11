@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"github.com/arelate/align/data"
 	"github.com/arelate/align/paths"
 	"github.com/boggydigital/nod"
@@ -20,12 +21,9 @@ func Scan(slug, title string) error {
 	sa := nod.Begin("scanning manuals...")
 	defer sa.End()
 
-	slugManuals := make(map[string][]string)
-
-	if manuals, err := scanManuals(slug); err != nil {
+	manuals, err := scanManuals(slug)
+	if err != nil {
 		return sa.EndWithError(err)
-	} else {
-		slugManuals[slug] = manuals
 	}
 
 	rdx, err := paths.NewReduxWriter()
@@ -39,11 +37,16 @@ func Scan(slug, title string) error {
 		}
 	}
 
-	if err := rdx.BatchReplaceValues(data.ManualsProperty, slugManuals); err != nil {
+	if err := rdx.ReplaceValues(data.ManualsProperty, slug, manuals...); err != nil {
 		return sa.EndWithError(err)
 	}
 
-	sa.EndWithResult("done")
+	result := "done"
+	if len(manuals) > 0 {
+		result = fmt.Sprintf("found %d manual(s)", len(manuals))
+	}
+
+	sa.EndWithResult(result)
 
 	return nil
 }

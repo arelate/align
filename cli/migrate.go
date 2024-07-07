@@ -17,6 +17,10 @@ func Migrate() error {
 	ma := nod.NewProgress("migrating data...")
 	defer ma.End()
 
+	if err := Backup(); err != nil {
+		return ma.EndWithError(err)
+	}
+
 	targets := []pathways.AbsDir{paths.Data, paths.Metadata, paths.Navigation, paths.Pages}
 
 	ma.TotalInt(len(targets))

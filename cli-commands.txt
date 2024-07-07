@@ -40,6 +40,8 @@ get-data
     page
     force
 
+migrate
+
 reduce
     slug^*
     all

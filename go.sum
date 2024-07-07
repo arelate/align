@@ -10,6 +10,10 @@ github.com/boggydigital/dolo v0.2.15 h1:7wMOgmRF7/jrYdZu+iruhz2m8a61WpZKM3UwXqL3
 github.com/boggydigital/dolo v0.2.15/go.mod h1:FUhJVj468bLhQV45QxsHCWbMHuZvPUkg15SSOlbc0qk=
 github.com/boggydigital/kevlar v0.5.2 h1:DKky34Uh9cffMY4rZUZom39LjgMGVktdul0O49vh6u8=
 github.com/boggydigital/kevlar v0.5.2/go.mod h1:mkqS7UrNdXjWOLRgh1pU0ruL3wUqzC8zghykuxwVq6o=
+github.com/boggydigital/kevlar v0.5.4 h1:2yP5qi5zAbw+NAx58W3OUmLJcVBZTj+sN6bbbVSkgqc=
+github.com/boggydigital/kevlar v0.5.4/go.mod h1:eR+LJdemg0A8W+c/mTDaJH9n5xEFAGe3cuDoK7eSVBs=
+github.com/boggydigital/kevlar v0.5.5 h1:JL4G4dm1rt0MQiCCg00oHl6eH2qYF/Ay/+AcBGqNMjc=
+github.com/boggydigital/kevlar v0.5.5/go.mod h1:eR+LJdemg0A8W+c/mTDaJH9n5xEFAGe3cuDoK7eSVBs=
 github.com/boggydigital/match_node v0.1.16 h1:oE7Hlehb1xuFnB3k7kfZPjaOV3c+j0g/O76+XVoib3E=
 github.com/boggydigital/match_node v0.1.16/go.mod h1:dAlD1Ktt/eUSkGzvqoxDUDTmAKZO6V7aWH5toocaeU4=
 github.com/boggydigital/nod v0.1.21 h1:pQbrgswCuU5dr3IWS1Z902PJAm5BebSLG+Q3aG7KJ+4=

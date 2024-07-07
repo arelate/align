@@ -56,6 +56,7 @@ func main() {
 		"get-navigation":    cli.GetNavigationHandler,
 		"get-primary-image": cli.GetPrimaryImageHandler,
 		"get-page":          cli.GetPageHandler,
+		"migrate":           cli.MigrateHandler,
 		"reduce":            cli.ReduceHandler,
 		"scan":              cli.ScanHandler,
 		"serve":             cli.ServeHandler,

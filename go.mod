@@ -7,7 +7,7 @@ require (
 	github.com/boggydigital/backups v0.1.3
 	github.com/boggydigital/clo v1.0.4
 	github.com/boggydigital/dolo v0.2.15
-	github.com/boggydigital/kevlar v0.5.13
+	github.com/boggydigital/kevlar v0.5.14
 	github.com/boggydigital/match_node v0.1.16
 	github.com/boggydigital/nod v0.1.21
 	github.com/boggydigital/pathways v0.1.14

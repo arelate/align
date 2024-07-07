@@ -3,7 +3,7 @@ package view_models
 import (
 	"fmt"
 	"github.com/arelate/align/data"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"html/template"
 	"net/url"
 	"path"
@@ -18,14 +18,14 @@ type WikisSlugViewModel struct {
 	Manuals []string
 }
 
-func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) (*WikisSlugViewModel, error) {
+func NewWikiSlugViewModel(slug string, rdx kevlar.ReadableRedux) (*WikisSlugViewModel, error) {
 
 	wsvm := &WikisSlugViewModel{
 		Slug:  slug,
 		Items: make([]template.HTML, 0),
 	}
 
-	if navTitle, ok := rdx.GetFirstVal(data.NavigationTitleProperty, slug); ok {
+	if navTitle, ok := rdx.GetLastVal(data.NavigationTitleProperty, slug); ok {
 		wsvm.Title = navTitle
 	}
 
@@ -46,7 +46,7 @@ func NewWikiSlugViewModel(slug string, rdx kvas.ReadableRedux) (*WikisSlugViewMo
 	return wsvm, nil
 }
 
-func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) (string, error) {
+func WikiNavigationHTML(slug, pageUrl string, rdx kevlar.ReadableRedux) (string, error) {
 
 	if pageUrl == "" {
 		pageUrl = MainPage
@@ -58,7 +58,7 @@ func WikiNavigationHTML(slug, pageUrl string, rdx kvas.ReadableRedux) (string, e
 	}
 
 	pageTitle := ""
-	if pt, ok := rdx.GetFirstVal(data.PageTitleProperty, path.Join(slug, pageUrl)); ok {
+	if pt, ok := rdx.GetLastVal(data.PageTitleProperty, path.Join(slug, pageUrl)); ok {
 		pageTitle = pt
 	}
 

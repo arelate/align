@@ -6,7 +6,7 @@ import (
 	"github.com/arelate/align/render/view_models"
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/dolo"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"github.com/boggydigital/nod"
 	"github.com/boggydigital/pathways"
 	"net/url"
@@ -21,7 +21,7 @@ func GetPrimaryImageHandler(u *url.URL) error {
 	return GetPrimaryImage(nil, slug, force)
 }
 
-func GetPrimaryImage(kv kvas.KeyValues, slug string, force bool) error {
+func GetPrimaryImage(kv kevlar.KeyValues, slug string, force bool) error {
 
 	gpia := nod.NewProgress("getting primary image for %s...", slug)
 	defer gpia.End()

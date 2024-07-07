@@ -7,7 +7,7 @@ import (
 	"github.com/arelate/align/paths"
 	"github.com/arelate/align/render/view_models"
 	"github.com/arelate/southern_light/ign_integration"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"github.com/boggydigital/nod"
 	"net/url"
 	"path"
@@ -30,7 +30,10 @@ func Reduce(all bool, slugs ...string) error {
 		if err != nil {
 			return ra.EndWithError(err)
 		}
-		slugs = nkv.Keys()
+		slugs, err = nkv.Keys()
+		if err != nil {
+			return ra.EndWithError(err)
+		}
 	}
 
 	ra.TotalInt(len(slugs))
@@ -69,7 +72,10 @@ func reduceSlug(slug string) error {
 
 	// wiki
 
-	reductions[data.WikiPages][slug] = dkv.Keys()
+	reductions[data.WikiPages][slug], err = dkv.Keys()
+	if err != nil {
+		return rsa.EndWithError(err)
+	}
 
 	mainPage, err := getWikiPage(view_models.MainPage, dkv)
 	if err != nil {
@@ -81,7 +87,10 @@ func reduceSlug(slug string) error {
 
 	// pages
 
-	pages := dkv.Keys()
+	pages, err := dkv.Keys()
+	if err != nil {
+		return rsa.EndWithError(err)
+	}
 
 	rsa.TotalInt(len(pages))
 
@@ -151,7 +160,11 @@ func reduceSlug(slug string) error {
 		if err != nil {
 			return rsa.EndWithError(err)
 		}
-		if !dkv.Has(link) {
+		has, err := dkv.Has(link)
+		if err != nil {
+			return rsa.EndWithError(err)
+		}
+		if !has {
 			reductions[data.PageMissingProperty][slug] = append(reductions[data.PageMissingProperty][slug], link)
 		}
 	}
@@ -167,7 +180,7 @@ func reduceSlug(slug string) error {
 	return nil
 }
 
-func getWikiPage(page string, kv kvas.KeyValues) (*ign_integration.WikiProps, error) {
+func getWikiPage(page string, kv kevlar.KeyValues) (*ign_integration.WikiProps, error) {
 	wikiPage, err := kv.Get(page)
 	if err != nil {
 		return nil, err

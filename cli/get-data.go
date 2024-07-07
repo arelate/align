@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/arelate/align/paths"
 	"github.com/arelate/align/render/view_models"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"github.com/boggydigital/match_node"
 	"github.com/boggydigital/nod"
 	"golang.org/x/net/html"
@@ -48,7 +48,12 @@ func GetData(slug, page string, force bool) error {
 		return rca.EndWithError(err)
 	}
 
-	if dkv.Has(page) && !force {
+	has, err := dkv.Has(page)
+	if err != nil {
+		return rca.EndWithError(err)
+	}
+
+	if has && !force {
 		rca.EndWithResult("already exist")
 		return nil
 	}
@@ -58,7 +63,12 @@ func GetData(slug, page string, force bool) error {
 		return rca.EndWithError(err)
 	}
 
-	if !pkv.Has(page) {
+	has, err = pkv.Has(page)
+	if err != nil {
+		return rca.EndWithError(err)
+	}
+
+	if !has {
 		rca.EndWithResult("page not available")
 		return nil
 	}
@@ -81,7 +91,7 @@ func GetData(slug, page string, force bool) error {
 	return nil
 }
 
-func getSetReducedContent(page string, src io.Reader, kv kvas.KeyValues) (string, error) {
+func getSetReducedContent(page string, src io.Reader, kv kevlar.KeyValues) (string, error) {
 
 	body, err := html.Parse(src)
 	if err != nil {

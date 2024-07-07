@@ -2,24 +2,24 @@ package paths
 
 import (
 	"github.com/arelate/align/data"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"github.com/boggydigital/pathways"
 )
 
-func NewReduxReader() (kvas.ReadableRedux, error) {
+func NewReduxReader() (kevlar.ReadableRedux, error) {
 	amd, err := pathways.GetAbsDir(Metadata)
 	if err != nil {
 		return nil, err
 	}
 
-	return kvas.NewReduxReader(amd, data.AllReduxProperties()...)
+	return kevlar.NewReduxReader(amd, data.AllReduxProperties()...)
 }
 
-func NewReduxWriter() (kvas.WriteableRedux, error) {
+func NewReduxWriter() (kevlar.WriteableRedux, error) {
 	amd, err := pathways.GetAbsDir(Metadata)
 	if err != nil {
 		return nil, err
 	}
 
-	return kvas.NewReduxWriter(amd, data.AllReduxProperties()...)
+	return kevlar.NewReduxWriter(amd, data.AllReduxProperties()...)
 }

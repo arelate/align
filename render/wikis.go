@@ -21,7 +21,7 @@ func Wikis(w io.Writer) error {
 	sort.Strings(slugs)
 
 	for _, slug := range slugs {
-		if title, ok := rdx.GetFirstVal(data.NavigationTitleProperty, slug); ok {
+		if title, ok := rdx.GetLastVal(data.NavigationTitleProperty, slug); ok {
 			titles[slug] = title
 		}
 	}

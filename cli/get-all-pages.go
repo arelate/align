@@ -7,7 +7,7 @@ import (
 	"github.com/arelate/align/paths"
 	"github.com/arelate/align/render/view_models"
 	"github.com/arelate/southern_light/ign_integration"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"github.com/boggydigital/nod"
 	"io"
 	"net/url"
@@ -121,7 +121,7 @@ func morePages(pages map[string]bool) bool {
 // from the buffered data result of getting page
 // 3) Get navigation - only for the main page and only from results
 // 4) Decode data JSON and get all the links - previous, next pages and <a href>
-func getUrls(skv, rkv kvas.KeyValues, slug, page string, throttle int64, force bool) ([]string, error) {
+func getUrls(skv, rkv kevlar.KeyValues, slug, page string, throttle int64, force bool) ([]string, error) {
 
 	gua := nod.Begin("getting page and data for %s...", filepath.Join(slug, page))
 	defer gua.End()
@@ -131,7 +131,12 @@ func getUrls(skv, rkv kvas.KeyValues, slug, page string, throttle int64, force b
 
 	gotPage, gotData := false, false
 
-	if !skv.Has(page) || force {
+	has, err := skv.Has(page)
+	if err != nil {
+		return nil, err
+	}
+
+	if !has || force {
 		buf := bytes.NewBuffer(make([]byte, 0, 512))
 		err = getSetPageContent(skv, slug, page, buf)
 		if buf.Len() > 0 {
@@ -160,7 +165,12 @@ func getUrls(skv, rkv kvas.KeyValues, slug, page string, throttle int64, force b
 
 	data := ""
 
-	if !rkv.Has(page) || force {
+	has, err = rkv.Has(page)
+	if err != nil {
+		return nil, err
+	}
+
+	if !has || force {
 		data, err = getSetReducedContent(page, sr, rkv)
 	} else {
 		gotData = true

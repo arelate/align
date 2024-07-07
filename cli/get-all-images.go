@@ -29,7 +29,10 @@ func GetAllImages(slug string, force bool) error {
 		return gaia.EndWithError(err)
 	}
 
-	pages := kv.Keys()
+	pages, err := kv.Keys()
+	if err != nil {
+		return gaia.EndWithError(err)
+	}
 
 	gaia.TotalInt(len(pages))
 

@@ -4,7 +4,7 @@ import (
 	"github.com/arelate/align/paths"
 	"github.com/arelate/align/render/view_models"
 	"github.com/arelate/southern_light/ign_integration"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"github.com/boggydigital/nod"
 	"io"
 	"net/http"
@@ -43,7 +43,12 @@ func GetPage(slug, page string, force bool) error {
 		return gsca.EndWithError(err)
 	}
 
-	if kv.Has(page) && !force {
+	has, err := kv.Has(page)
+	if err != nil {
+		return gsca.EndWithError(err)
+	}
+
+	if has && !force {
 		gsca.EndWithResult("already exist")
 		return nil
 	}
@@ -57,7 +62,7 @@ func GetPage(slug, page string, force bool) error {
 	return nil
 }
 
-func getSetPageContent(kv kvas.KeyValues, slug, page string, dst io.Writer) error {
+func getSetPageContent(kv kevlar.KeyValues, slug, page string, dst io.Writer) error {
 
 	u := ign_integration.WikiPageUrl(slug, page)
 

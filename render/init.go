@@ -3,7 +3,7 @@ package render
 import (
 	"embed"
 	"github.com/arelate/align/paths"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"html/template"
 )
 
@@ -12,7 +12,7 @@ var (
 	//go:embed "templates/*.gohtml"
 	templates embed.FS
 
-	rdx kvas.ReadableRedux
+	rdx kevlar.ReadableRedux
 )
 
 func Init() error {

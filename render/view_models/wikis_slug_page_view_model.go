@@ -2,7 +2,7 @@ package view_models
 
 import (
 	"github.com/arelate/align/data"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"html/template"
 	"path"
 )
@@ -20,41 +20,41 @@ type WikisSlugPageViewModel struct {
 	NextPageUrl   string
 }
 
-func NewWikiPageViewModel(slug, page string, rdx kvas.ReadableRedux) *WikisSlugPageViewModel {
+func NewWikiPageViewModel(slug, page string, rdx kevlar.ReadableRedux) *WikisSlugPageViewModel {
 
 	wpvm := &WikisSlugPageViewModel{
 		Slug: slug,
 	}
 
-	if wikiName, ok := rdx.GetFirstVal(data.WikiNameProperty, slug); ok {
+	if wikiName, ok := rdx.GetLastVal(data.WikiNameProperty, slug); ok {
 		wpvm.WikiName = wikiName
 	}
 
 	sp := path.Join(slug, page)
 
-	if pageTitle, ok := rdx.GetFirstVal(data.PageTitleProperty, sp); ok {
+	if pageTitle, ok := rdx.GetLastVal(data.PageTitleProperty, sp); ok {
 		wpvm.PageTitle = pageTitle
 	}
-	if nextPageUrl, ok := rdx.GetFirstVal(data.PageNextPageUrlProperty, sp); ok {
+	if nextPageUrl, ok := rdx.GetLastVal(data.PageNextPageUrlProperty, sp); ok {
 		wpvm.NextPageUrl = nextPageUrl
-		if npt, ok := rdx.GetFirstVal(data.PageTitleProperty, path.Join(slug, nextPageUrl)); ok && npt != "" {
+		if npt, ok := rdx.GetLastVal(data.PageTitleProperty, path.Join(slug, nextPageUrl)); ok && npt != "" {
 			wpvm.NextPageTitle = npt
 		} else {
 			wpvm.NextPageTitle = nextPageUrl
 		}
 	}
-	if prevPageUrl, ok := rdx.GetFirstVal(data.PagePrevPageUrlProperty, sp); ok {
+	if prevPageUrl, ok := rdx.GetLastVal(data.PagePrevPageUrlProperty, sp); ok {
 		wpvm.PrevPageUrl = prevPageUrl
-		if ppt, ok := rdx.GetFirstVal(data.PageTitleProperty, path.Join(slug, prevPageUrl)); ok && ppt != "" {
+		if ppt, ok := rdx.GetLastVal(data.PageTitleProperty, path.Join(slug, prevPageUrl)); ok && ppt != "" {
 			wpvm.PrevPageTitle = ppt
 		} else {
 			wpvm.PrevPageTitle = prevPageUrl
 		}
 	}
-	if publishDate, ok := rdx.GetFirstVal(data.PagePublishDateProperty, sp); ok {
+	if publishDate, ok := rdx.GetLastVal(data.PagePublishDateProperty, sp); ok {
 		wpvm.PublishDate = publishDate
 	}
-	if updatedAt, ok := rdx.GetFirstVal(data.PageUpdatedAtProperty, sp); ok {
+	if updatedAt, ok := rdx.GetLastVal(data.PageUpdatedAtProperty, sp); ok {
 		wpvm.UpdatedAt = updatedAt
 	}
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/arelate/align/paths"
 	"github.com/arelate/align/render/view_models"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"github.com/boggydigital/nod"
 	"io"
 	"net/url"
@@ -32,7 +32,12 @@ func GetNavigation(slug string, force bool) error {
 		return gna.EndWithError(err)
 	}
 
-	if nkv.Has(slug) && !force {
+	has, err := nkv.Has(slug)
+	if err != nil {
+		return gna.EndWithError(err)
+	}
+
+	if has && !force {
 		gna.EndWithResult("already exist")
 		return nil
 	}
@@ -62,7 +67,7 @@ func GetNavigation(slug string, force bool) error {
 	return nil
 }
 
-func getSetNavigation(slug string, data string, kv kvas.KeyValues) error {
+func getSetNavigation(slug string, data string, kv kevlar.KeyValues) error {
 	if _, rem, ok := strings.Cut(data, "\"navigation\":"); ok {
 		if nav, _, ok := strings.Cut(rem, ",\"videos:"); ok {
 			return kv.Set(slug, strings.NewReader(nav))

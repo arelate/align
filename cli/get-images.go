@@ -5,7 +5,7 @@ import (
 	"github.com/arelate/align/paths"
 	"github.com/arelate/southern_light/ign_integration"
 	"github.com/boggydigital/dolo"
-	"github.com/boggydigital/kvas"
+	"github.com/boggydigital/kevlar"
 	"github.com/boggydigital/nod"
 	"net/url"
 	"path/filepath"
@@ -22,7 +22,7 @@ func GetImagesHandler(u *url.URL) error {
 	return GetImages(nil, slug, page, force)
 }
 
-func GetImages(kv kvas.KeyValues, slug, page string, force bool) error {
+func GetImages(kv kevlar.KeyValues, slug, page string, force bool) error {
 
 	gia := nod.NewProgress("getting images for %s...", filepath.Join(slug, page))
 	defer gia.End()
